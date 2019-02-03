@@ -39,6 +39,7 @@ class GameState(states.State):
                     self.level.undo()
 
                 if self.level.complete:
+                    self.game.cur_level += 1
                     self.game.push_state(EndState())
 
     def draw(self, screen):

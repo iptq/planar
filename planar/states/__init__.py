@@ -1,6 +1,7 @@
 class State(object):
     def __init__(self, game=None):
         self.game = game
+        self.transitioning = False
 
     @property
     def transparent(self):

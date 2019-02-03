@@ -359,13 +359,13 @@ class Level(object):
 
                 import planar.player as player
                 if isinstance(s1, player.Player) or isinstance(s2, player.Player):
-                    print('player exists with other segment', s1, s2)
+                    # print('player exists with other segment', s1, s2)
                     return False
                 if s1.t == 0 or s2.t == 0:
-                    print('full segment exists with other segment', s1, s2)
+                    # print('full segment exists with other segment', s1, s2)
                     return False
                 if abs(s1.t - s2.t) != 2:
-                    print('conflicting segments exist', s1.t, s2.t)
+                    # print('conflicting segments exist', s1.t, s2.t)
                     return False
                 continue
             return False
