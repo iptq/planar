@@ -26,3 +26,7 @@ def opposite(direction):
         return RIGHT
     if direction == RIGHT:
         return LEFT
+    if direction == DIRECTION_VERTICAL:
+        return DIRECTION_HORIZONTAL
+    if direction == DIRECTION_HORIZONTAL:
+        return DIRECTION_VERTICAL

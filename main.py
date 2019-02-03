@@ -7,11 +7,12 @@ import sys
 from planar import Game
 from planar.states.game import GameState
 from planar.tests import *
+from planar.states.editor import EditorState
 
 if __name__ == "__main__":
     pygame.init()
 
-    menu_state = GameState(test3())
+    menu_state = EditorState((5,5))
     game = Game()
     game.push_state(menu_state)
 

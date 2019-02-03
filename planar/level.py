@@ -175,15 +175,16 @@ class Block(object):
 
     def add_segment(self, segment):
         segment.block = self
+        for seg in self.segments:
+            (seg.rx, seg.ry) = seg.position
         self.segments.append(segment)
-        if segment.x < self.min_x:
-            self.min_x = segment.x
-        if segment.x > self.max_x:
-            self.max_x = segment.x
-        if segment.y < self.min_y:
-            self.min_y = segment.y
-        if segment.y > self.max_y:
-            self.max_y = segment.y
+        self.min_x = min(s.rx for s in self.segments) - self.x
+        self.max_x = max(s.rx for s in self.segments) - self.x
+        self.min_y = min(s.ry for s in self.segments) - self.y
+        self.max_y = max(s.ry for s in self.segments) - self.y
+        for seg in self.segments:
+            seg.rx -= self.x
+            seg.ry -= self.y
 
     def __str__(self):
         return "Block [" + ", ".join(map(str, self.segments)) + "]"
@@ -341,4 +342,3 @@ class Level(object):
                 #object is a player
                 # object.force_move(direction)
                 self.move_block(object, direction)
-
