@@ -37,10 +37,11 @@ class Game(object):
                 self.states[-1].update(events)
 
                 # draw topmost state
-                for state in reversed(self.states):
-                    state.draw(self.screen)
-                    if not state.transparent:
+                for i in reversed(range(len(self.states))):
+                    if not self.states[i].transparent:
                         break
+                for state in self.states[i:]:
+                    state.draw(self.screen)
 
             pygame.display.flip()
             pygame.display.update()

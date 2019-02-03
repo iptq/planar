@@ -4,6 +4,7 @@ from pygame import Color
 
 import planar.constants as constants
 import planar.states as states
+from planar.states.end import EndState
 
 class GameState(states.State):
     def __init__(self, level):
@@ -36,6 +37,9 @@ class GameState(states.State):
                     self.level.players[1].try_move(constants.RIGHT)
                 elif event.key == pygame.K_z:
                     self.level.undo()
+
+                if self.level.complete:
+                    self.game.push_state(EndState())
 
     def draw(self, screen):
         screen.fill(Color(100, 80, 100))
