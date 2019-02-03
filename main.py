@@ -9,5 +9,9 @@ from planar.states.menu import MenuState
 
 if __name__ == "__main__":
     pygame.init()
-    game = Game(MenuState())
+
+    menu_state = MenuState()
+    game = Game()
+    game.push_state(menu_state)
+
     game.run()
