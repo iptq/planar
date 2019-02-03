@@ -118,7 +118,15 @@ def test3():
         Segment(4,10,1,0),
         Segment(6,10,1,0),
         Segment(8,10,1,0),
-        Segment(10,10,1,0)
+        Segment(10,10,1,0),
+        Segment(7,7,0,0),
+        Segment(7,7,1,0),
+        Segment(5,5,0,0),
+        Segment(5,5,1,0),
+        Segment(3,1,0,0),
+        Segment(3,1,1,0),
+        Segment(1,5,0,0),
+        Segment(1,5,1,0)
     ], False, constants.DIRECTION_HORIZONTAL, [0, 0, 0]),
     Block((9, 9), [
         Segment(0, 0, 0, 0),
@@ -128,15 +136,44 @@ def test3():
         Segment(0, -8, 0, 0),
         Segment(0, -8, 1, 0),
         Segment(-2, -6, 0, 0),
-        Segment(-2, -6, 1, 0)
+        Segment(-2, -6, 1, 0),
+        Segment(-4,-8,0,0),
+        Segment(-4,-8,1,0),
+        Segment(-8,-6,0,0),
+        Segment(-8,-6,1,0),
+        Segment(-4,0,0,0),
+        Segment(-4,0,1,0),
+        Segment(-6,0,0,0),
+        Segment(-6,0,1,0),
+        Segment(-8,0,0,0),
+        Segment(-8,0,1,0),
+        Segment(-6,-2,0,0),
+        Segment(-6,-2,1,0),
+
+        Segment(-6,-6,0,0),
+        Segment(-6,-6,1,0)
     ], True, constants.DIRECTION_HORIZONTAL, [255, 10, 100]),
-     Block((9, 5), [
+    Block((9, 5), [
         Segment(0, 0, 0, 0),
         Segment(0, 0, 1, 0),
         Segment(0, 2, 0, 0),
         Segment(0, 2, 1, 0),
         Segment(-2, -4, 0, 0),
-        Segment(-2, -4, 1, 0)
+        Segment(-2, -4, 1, 0),
+        Segment(-2,4,0,0),
+        Segment(-2,4,1,0),
+        Segment(-2,0,0,0),
+        Segment(-2,0,1,0),
+        Segment(-4,2,0,0),
+        Segment(-4,2,1,0),
+        Segment(-6,0,0,0),
+        Segment(-6,0,1,0),
+        Segment(-8,2,0,0),
+        Segment(-8,2,1,0),
+        Segment(-8,4,0,0),
+        Segment(-8,4,1,0),
+        Segment(-4,-2,0,0),
+        Segment(-4,-2,1,0)
     ], True, constants.DIRECTION_VERTICAL, [25, 160, 10])
 ], [
     Player(9, 0, 0, [66, 134, 244]),
