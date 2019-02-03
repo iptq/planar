@@ -25,6 +25,7 @@ class EditorState(states.State):
         self.yoff = constants.SCREEN_HEIGHT / 2 - (self.level.dim[1] + 4) * self.scale / 2
         xinput = constants.SCREEN_WIDTH*.66
         yinput = self.yoff
+        self.filename = TextInputBox(SCREEN_WIDTH//2, 0, 100, 30)
         self.cinputs = [InputBox(xinput, yinput-70, 140, 30), InputBox(xinput, yinput-30, 140, 30), \
                         InputBox(xinput, yinput+10, 140, 30)]
         self.texts = [TextBox(xinput, yinput - 100, 120, 20, "New Color"),
@@ -141,6 +142,7 @@ class EditorState(states.State):
             text.update()
         for button in self.buttons:
             button.update
+        self.filename.update()
 
     def draw(self, screen):
         screen.fill(Color(100, 80, 100))
@@ -164,6 +166,13 @@ class EditorState(states.State):
             text.draw(screen)
         for button in self.buttons:
             button.draw(screen)
+        self.filename.draw(screen)
 
     def save(self):
-        pass
+        data = json.dumps(level, cls=planar.serial.GameEncoder, indent=2)
+        with open("level.txt", "w") as fout:
+            fout.write(data)
+
+def load(self, string):
+    with open(string, "r") as fin:
+        return json.loads(fin.read(), cls=planar.serial.GameEncoder)
