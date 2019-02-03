@@ -45,10 +45,18 @@ class GameState(states.State):
     def draw(self, screen):
         screen.fill(Color(100, 80, 100))
 
-        scale = constants.SCREEN_WIDTH // (2 * self.level.dim[0] + 6)
+        ratio = (2 * self.level.dim[0] + 6) / (self.level.dim[1] + 4)
+        screen_ratio = constants.SCREEN_WIDTH / constants.SCREEN_HEIGHT
+        if ratio > screen_ratio:
+            scale = constants.SCREEN_WIDTH // (2 * self.level.dim[0] + 6)
+            xoff = 0
+            yoff = constants.SCREEN_HEIGHT / 2 - (self.level.dim[1] + 4) * scale / 2
+        else:
+            scale = constants.SCREEN_HEIGHT // (self.level.dim[1] + 4)
+            xoff = constants.SCREEN_WIDTH / 2 - (2 * self.level.dim[0] + 6) * scale / 2
+            yoff = 0
+
         left, right = self.level.render(scale)
 
-        yoff = constants.SCREEN_HEIGHT / 2 - (self.level.dim[1] + 4) * scale / 2
-
-        screen.blit(left, (2 * scale, yoff + 2 * scale))
-        screen.blit(right, ((4 + self.level.dim[0]) * scale, yoff + 2 * scale))
+        screen.blit(left, (xoff + 2 * scale, yoff + 2 * scale))
+        screen.blit(right, (xoff + (4 + self.level.dim[0]) * scale, yoff + 2 * scale))

@@ -36,14 +36,14 @@ class EditorState(states.State):
                         TextBox(xinput+50, yinput + 50, 100, 20, "None")]
         self.buttons = [Button(xinput+130, yinput-100, 50, 30, "Add", self.add_block),
                         Button(10, yinput-30, 50, 30, "0", self.change_type, val=0),
-                        Button(60, yinput-30, 50, 30, "1", self.change_type, val=1),
-                        Button(110, yinput-30, 50, 30, "2", self.change_type, val=2),
-                        Button(160, yinput-30, 50, 30, "3", self.change_type, val=3),
-                        Button(210, yinput-30, 50, 30, "4", self.change_type, val=4),
+                        Button(70, yinput-30, 50, 30, "1", self.change_type, val=1),
+                        Button(130, yinput-30, 50, 30, "2", self.change_type, val=2),
+                        Button(190, yinput-30, 50, 30, "3", self.change_type, val=3),
+                        Button(250, yinput-30, 50, 30, "4", self.change_type, val=4),
                         Button(10, constants.SCREEN_HEIGHT *.75, 200, 30, "Change Direction", self.change_direction),
                         Button(10, constants.SCREEN_HEIGHT *.75+40, 200, 30, "Change Moveable", self.change_moveable),
-                        Button(210, constants.SCREEN_HEIGHT *.75, 200, 30, "Add Player", self.add_player),
-                        Button(210, constants.SCREEN_HEIGHT *.75+40, 200, 30, "Add Goal", self.add_goal)]
+                        Button(220, constants.SCREEN_HEIGHT *.75, 200, 30, "Add Player", self.add_player),
+                        Button(220, constants.SCREEN_HEIGHT *.75+40, 200, 30, "Add Goal", self.add_goal)]
         self.active_block = level.blocks[0]
         self.active_segment = seg
 
@@ -124,6 +124,9 @@ class EditorState(states.State):
             for button in self.buttons:
                 button.handle_event(event)
             self.filename.handle_event(event)
+            if event.type == pygame.MOUSEMOTION:
+                pos = self.to_grid_location(pygame.mouse.get_pos())
+                print(pos)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = self.to_grid_location(pygame.mouse.get_pos())
                 if pos != None:
@@ -132,6 +135,8 @@ class EditorState(states.State):
                     self.active_segment.ry = y
                     self.active_segment.z = z
             if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    self.game.pop_state()
                 if event.key == pygame.K_j:
                     self.add_segment()
                 if event.key == pygame.K_d:

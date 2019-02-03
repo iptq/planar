@@ -15,6 +15,9 @@ if __name__ == "__main__":
 
     menu_state = GameState(load("Filename.txt"))
     game = Game()
-    game.push_state(menu_state)
+    game.push_state(MenuState())
+    if len(sys.argv) > 1:
+        if sys.argv[1] == "editor":
+            game.push_state(EditorState((5, 5)))
 
     game.run()

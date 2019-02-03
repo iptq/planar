@@ -24,7 +24,7 @@ class EndState(states.State):
                     if self.game.cur_level >= len(self.game.levels):
                         self.game.states = self.game.states[:1]
                     else:
-                        self.game.push_state(planar.states.game.GameState(self.game.levels[self.game.cur_level]))
+                        self.game.push_state(planar.states.game.GameState(self.game.levels[self.game.cur_level]()))
 
     def draw(self, screen):
         # draw background
