@@ -15,5 +15,6 @@ class GameState(states.State):
 
     def draw(self, screen):
         screen.fill(Color(100, 80, 100))
-        layers = self.level.render(30)
-        print(layers)
+        left, right = self.level.render(30)
+        screen.blit(left, (0, 0))
+        screen.blit(right, (300, 0))
