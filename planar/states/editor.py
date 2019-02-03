@@ -9,6 +9,7 @@ from planar.level import Level, Block, Segment
 from planar.numinput import InputBox
 from planar.textbox import TextBox
 from planar.button import Button
+from planar.player import Player
 
 class EditorState(states.State):
     def __init__(self, dim):
@@ -20,7 +21,7 @@ class EditorState(states.State):
         seg.block = level.blocks[0]
         self.ghost = seg.block
         self.level = level
-        self.scale = scale = (constants.SCREEN_WIDTH*.66) // (2 * self.level.dim[0] + 6)
+        self.scale = scale = int((constants.SCREEN_WIDTH*.66) // (2 * self.level.dim[0] + 6))
         self.yoff = constants.SCREEN_HEIGHT / 2 - (self.level.dim[1] + 4) * self.scale / 2
         xinput = constants.SCREEN_WIDTH*.66
         yinput = self.yoff
@@ -37,7 +38,9 @@ class EditorState(states.State):
                         Button(160, yinput-30, 50, 30, "3", self.change_type, val=3),
                         Button(210, yinput-30, 50, 30, "4", self.change_type, val=4),
                         Button(10, constants.SCREEN_HEIGHT *.75, 200, 30, "Change Direction", self.change_direction),
-                        Button(10, constants.SCREEN_HEIGHT *.75+40, 200, 30, "Change Moveable", self.change_moveable)]
+                        Button(10, constants.SCREEN_HEIGHT *.75+40, 200, 30, "Change Moveable", self.change_moveable),
+                        Button(210, constants.SCREEN_HEIGHT *.75, 200, 30, "Add Player", self.add_player),
+                        Button(210, constants.SCREEN_HEIGHT *.75+40, 200, 30, "Add Goal", self.add_goal)]
         self.active_block = level.blocks[0]
         self.active_segment = seg
 
@@ -51,6 +54,14 @@ class EditorState(states.State):
         if x < 0 or y < 0 or x >= self.level.dim[0] or y >= self.level.dim[1]:
             return None
         return (x,y,z)
+
+    def add_player(self):
+        (x,y) = self.active_segment.position
+        self.level.players.append(Player(x,y,self.active_segment.z, [0,0,0]))
+
+    def add_goal(self):
+        (x,y) = self.active_segment.position
+        self.level.goals.append((x,y,self.active_segment.z))
 
     def change_type(self, type):
         self.active_segment.t = type

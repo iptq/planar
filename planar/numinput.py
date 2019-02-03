@@ -31,7 +31,7 @@ class InputBox:
                     self.active = False
                 elif event.key == pygame.K_BACKSPACE:
                     self.text = self.text[:-1]
-                    if len(text) > 0:
+                    if len(self.text) > 0:
                         self.num = int(self.text)
                 else:
                     text = event.unicode
