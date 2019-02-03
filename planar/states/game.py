@@ -35,7 +35,7 @@ class GameState(states.State):
                     self.level.players[1].try_move(constants.DOWN)
                 elif event.key == pygame.K_l:
                     self.level.players[1].try_move(constants.RIGHT)
-                elif event.key == pygame.K_z:
+                elif event.key == pygame.K_z or event.key == pygame.K_u:
                     self.level.undo()
 
                 if self.level.complete:

@@ -12,6 +12,7 @@ class Player(level.Block):
 
         self.movable = True
         self.direction = constants.DIRECTION_BOTH
+        self.is_player = True
 
         seg = level.Segment(0, 0, z, 0)
         seg.block = self
@@ -35,7 +36,7 @@ class Player(level.Block):
         return tile
 
     def try_move(self, direction):
-        res = self.can_move(direction)
+        res = self.can_move(direction, by_player=True)
         if res is None:
             return
 
@@ -47,7 +48,8 @@ class Player(level.Block):
 
         moves.append( (self, direction) )
         self.level.move_stack.append(moves)
-        self.force_move(direction)
+        self.level.move_block(self, direction)
+        # self.force_move(direction)
 
     def force_move(self, direction):
         dx, dy = direction

@@ -37,8 +37,9 @@ class Segment(object):
     def __repr__(self):
         return str(self)
 
-    def can_move(self, direction, depth=0):
+    def can_move(self, direction, by_player=False, depth=0):
         opposites = { 1: 3, 3: 1, 2: 4, 4: 2 }
+        # print(self.block.level.cellmap.keys())
 
         sx, sy = self.position
         curr = (sx, sy, self.z)
@@ -53,6 +54,11 @@ class Segment(object):
 
         # if this block is immovable, return no
         if not self.block.movable:
+            return None
+
+        # if this block is a player, return no
+        import planar.player as player
+        if isinstance(self.block, player.Player) and not by_player:
             return None
 
         # first check if this is a triangle and if there's another triangle in this cell
@@ -103,6 +109,7 @@ class Segment(object):
             else:
                 if self.t == 0:
                     # if this is a rectangle, then we can just push normally
+                    # print("class:", occupant.is_player, occupant)
                     res = occupant.can_move(direction, depth=depth+1)
                     if res is None:
                         return None
@@ -165,6 +172,7 @@ class Block(object):
         self.direction = direction
         self.color = color
         self.level = None
+        self.is_player = False
 
     def add_segment(self, segment):
         segment.block = self
@@ -184,7 +192,7 @@ class Block(object):
     def __repr__(self):
         return str(self)
 
-    def can_move(self, direction, depth=0):
+    def can_move(self, direction, by_player=False, depth=0):
         if self.direction == constants.DIRECTION_HORIZONTAL and (direction == constants.UP or direction == constants.DOWN):
             return None
         if self.direction == constants.DIRECTION_VERTICAL and (direction == constants.LEFT or direction == constants.RIGHT):
@@ -193,9 +201,9 @@ class Block(object):
         result = {}
         failed = False
         for segment in self.segments:
-            # print("{}(B) {} calling {}.can_move({})".format(depth * " ", self, segment, direction))
-            res = segment.can_move(direction, depth=depth+1)
-            # print("{}  ) = {}".format(depth * " ", res))
+            print("{}(B) {} calling {}.can_move({})".format(depth * " ", self, segment, direction))
+            res = segment.can_move(direction, by_player=by_player, depth=depth+1)
+            print("{}  ) = {}".format(depth * " ", res))
             if res is None:
                 failed = True
             else:
@@ -254,6 +262,7 @@ class Level(object):
                 self.cellmap[coords].append((player, 0))
             else:
                 self.cellmap[coords] = [(player, 0)]
+        # print(self.cellmap.keys())
         self.move_stack = deque()
         self.goals = goals
 
