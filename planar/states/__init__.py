@@ -1,6 +1,7 @@
 class State(object):
-    def __init__(self, transparent=False):
-        self.transparent = transparent
+    @property
+    def transparent(self):
+        return False
 
-    def draw(self):
+    def draw(self, _screen):
         raise NotImplementedError(f"draw() not implemented for {self.__class__}")

@@ -8,7 +8,7 @@ from planar.states.menu import MenuState
 class Game(object):
     def __init__(self, start):
         size = (constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT)
-        constants.GAME_FONT = pygame.freetype.Font("planar/font/ZCOOLKuaiLe-Regular.ttf")
+        constants.GAME_FONT = pygame.freetype.Font("planar/font/ZCOOLKuaiLe-Regular.ttf", 72)
 
         self.running = True
         self.clock = pygame.time.Clock()
@@ -24,7 +24,10 @@ class Game(object):
 
             # draw topmost state
             if self.states:
-                self.states[-1].draw()
+                for state in reversed(self.states):
+                    state.draw(self.screen)
+                    if not state.transparent:
+                        break
 
             pygame.display.flip()
             pygame.display.update()
