@@ -1,29 +1,29 @@
-UP = 0
+directionectionUP = 0
 RIGHT = 1
 DOWN = 2
 LEFT = 3
 
-def is_flat_side(type, dir):
-    return (type == 1 and (dir == DOWN or dir == LEFT)) \
-        or (type == 2 and (dir == DOWN or dir == RIGHT)) \
-        or (type == 3 and (dir == UP or dir == RIGHT)) \
-        or (type == 4 and (dir == UP or dir == LEFT))
+def is_flat_side(celltype, direction):
+    return (celltype == 1 and (direction == DOWN or direction == LEFT)) \
+        or (celltype == 2 and (direction == DOWN or direction == RIGHT)) \
+        or (celltype == 3 and (direction == UP or direction == RIGHT)) \
+        or (celltype == 4 and (direction == UP or direction == LEFT))
 
-def is_normal(type, other):
-    return (type == 1 and other != 3) or (type == 3 and other != 1) \
-        or (type == 2 and other != 4) or (type == 4 and other != 2)
+def is_normal(celltype, other):
+    return (celltype == 1 and other != 3) or (celltype == 3 and other != 1) \
+        or (celltype == 2 and other != 4) or (celltype == 4 and other != 2)
 
-def can_move(grid, pos, dir, type, object):
+def can_move(grid, pos, direction, celltype, object):
     # object is the object doing the moving, so that a block does not check
     # collisions with itself
     target = (0,0,0)
-    if dir == UP:
+    if direction == UP:
         target = (pos[0], pos[1]-1, pos[2])
-    elif dir == DOWN:
+    elif direction == DOWN:
         target = (pos[0], pos[1]+1, pos[2])
-    elif dir == LEFT:
+    elif direction == LEFT:
         target = (pos[0]-1, pos[1], pos[2])
-    elif dir == RIGHT:
+    elif direction == RIGHT:
         target = (pos[0]+1, pos[1], pos[2])
     else:
         return "ERROR INVALID DIRECTION"
@@ -43,54 +43,54 @@ def can_move(grid, pos, dir, type, object):
         if not block.moveable:
             return False
 
-        if type == 0 or is_flat_side(type, dir) or is_normal(type, t):
+        if celltype == 0 or is_flat_side(celltype, direction) or is_normal(celltype, t):
             #full block we are attempting to move
-            if dir != block.direction:
+            if direction != block.direction:
                 return False
             for cell in block.cells:
                 pos = (cell.x, cell.y, cell.z)
-                if not can_move(grid, pos, dir, cell.t, block)
+                if not can_move(grid, pos, direction, cell.t, block)
                     return False
 
-        elif type == 1:
+        elif celltype == 1:
             #gauranteed to be moving up or right into questionable block
-            if dir == UP:
+            if direction == UP:
                 for cell in block.cells:
                     pos = (cell.x, cell.y, cell.z)
                     if not can_move(grid, pos, RIGHT, cell.t, block):
                         return False
-            if dir == RIGHT:
+            if direction == RIGHT:
                 for cell in block.cells:
                     pos = (cell.x, cell.y, cell.z)
                     if not can_move(grid, pos, UP, cell.t, block):
                         return False
-        elif type == 2:
+        elif celltype == 2:
             #gauranteed to be moving up or left questionable block
-            if dir == UP:
+            if direction == UP:
                 for cell in block.cells:
                     pos = (cell.x, cell.y, cell.z)
                     if not can_move(grid, pos, LEFT, cell.t, block):
                         return False
-            if dir == LEFT:
+            if direction == LEFT:
                 for cell in block.cells:
                     pos = (cell.x, cell.y, cell.z)
                     if not can_move(grid, pos, UP, cell.t, block):
                         return False
-        elif type == 3:
+        elif celltype == 3:
             #gauranteed to be moving down or left questionable block
-            if dir == DOWN:
+            if direction == DOWN:
                 for cell in block.cells:
                     pos = (cell.x, cell.y, cell.z)
                     if not can_move(grid, pos, LEFT, cell.t, block):
                         return False
-            if dir == LEFT:
+            if direction == LEFT:
                 for cell in block.cells:
                     pos = (cell.x, cell.y, cell.z)
                     if not can_move(grid, pos, DOWN, cell.t, block):
                         return False
-        elif type == 4:
+        elif cellcelltype == 4:
             #gauranteed to be moing down or right questionable block
-            if dir == DOWN:
+            if direction == DOWN:
                 for cell in block.cells:
                     pos = (cell.x, cell.y, cell.z)
                     if not can_move(grid, pos, RIGHT, cell.t, block):
