@@ -22,7 +22,9 @@ class EndState(states.State):
 
     def draw(self, screen):
         # draw background
-        pygame.draw.rect(screen, (0, 0, 0, 0.2), (0, 0, constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT), 0)
+        bg = pygame.Surface((constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT), pygame.SRCALPHA)
+        bg.fill((0, 0, 0, 225))
+        screen.blit(bg, (0, 0))
 
         # draw text
         text_surface, rect = constants.GAME_FONT.render("congratulations, you have won", WHITE)
