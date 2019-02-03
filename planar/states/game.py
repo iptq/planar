@@ -14,6 +14,23 @@ class GameState(states.State):
                 if event.key == pygame.K_ESCAPE:
                     self.game.pop_state()
 
+                elif event.key == pygame.K_w:
+                    self.level.players[0].y -= 1
+                elif event.key == pygame.K_a:
+                    self.level.players[0].x -= 1
+                elif event.key == pygame.K_s:
+                    self.level.players[0].y += 1
+                elif event.key == pygame.K_d:
+                    self.level.players[0].x += 1
+                elif event.key == pygame.K_i:
+                    self.level.players[1].y -= 1
+                elif event.key == pygame.K_j:
+                    self.level.players[1].x -= 1
+                elif event.key == pygame.K_k:
+                    self.level.players[1].y += 1
+                elif event.key == pygame.K_l:
+                    self.level.players[1].x += 1
+
     def draw(self, screen):
         screen.fill(Color(100, 80, 100))
 

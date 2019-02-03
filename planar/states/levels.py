@@ -3,7 +3,8 @@ from pygame import Color
 
 import planar.states as states
 from planar.states.game import GameState
-from planar.level import Level, Block, Segment, Player
+from planar.level import Level, Block, Segment
+from planar.player import Player
 
 class LevelSelectState(states.State):
     def update(self, events):

@@ -2,19 +2,6 @@ import pygame
 
 import planar.constants
 
-class Player(object):
-    def __init__(self, x, y, z, color):
-        self.x = x
-        self.y = y
-        self.z = z
-        self.color = color
-
-    def render(self, cell_size):
-        tile = pygame.Surface((cell_size, cell_size), pygame.SRCALPHA, 32)
-        tile = tile.convert_alpha()
-        pygame.draw.circle(tile, self.color, [cell_size // 2, cell_size // 2], cell_size // 5 * 2, 0)
-        return tile
-
 class Segment(object):
     def __init__(self, x, y, z, t):
         self.x = x
