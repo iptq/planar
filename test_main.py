@@ -16,14 +16,26 @@ background.fill((250, 250, 250))
 
 lvl = level.Level((10, 10), [
     level.Block([
-        level.Segment(0, 0, 0, 1)
+        level.Segment(0, 0, 0, 1),
+        level.Segment(0, 1, 0, 0)
     ], True, 0, [255, 10, 100])
-], [])
+], [
+    level.Player(5, 5, 0, [66, 134, 244])
+])
 
 while 1:
     for event in pygame.event.get():
         if event.type == QUIT:
             sys.exit(0)
+        if event.type == KEYDOWN:
+            if event.unicode == 'w':
+                lvl.players[0].y -= 1
+            elif event.unicode == 'a':
+                lvl.players[0].x -= 1
+            elif event.unicode == 's':
+                lvl.players[0].y += 1
+            elif event.unicode == 'd':
+                lvl.players[0].x += 1
 
     screen.blit(background, (0, 0))
     renders = lvl.render(50, 2)
