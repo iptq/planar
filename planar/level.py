@@ -150,6 +150,10 @@ class Block(object):
         self.segments = segments
         for segment in self.segments:
             segment.block = self
+        self.min_x = min(s.rx for s in segments)
+        self.max_x = max(s.rx for s in segments)
+        self.min_y = min(s.ry for s in segments)
+        self.max_y = max(s.ry for s in segments)
         self.movable = movable
         self.direction = direction
         self.color = color
@@ -158,6 +162,14 @@ class Block(object):
     def add_segment(self, segment):
         segment.block = self
         self.segments.append(segment)
+        if segment.x < self.min_x:
+            self.min_x = segment.x
+        if segment.x > self.max_x:
+            self.max_x = segment.x
+        if segment.y < self.min_y:
+            self.min_y = segment.y
+        if segment.y > self.max_y:
+            self.max_y = segment.y
 
     def __str__(self):
         return "Block [" + ", ".join(map(str, self.segments)) + "]"
@@ -185,6 +197,17 @@ class Block(object):
         if failed: return None
         return result
 
+    def render(self, cell_size, padding=1):
+        layers = (pygame.Surface(((self.max_x - self.min_x + 1) * cell_size, (self.max_y - self.min_y + 1) * cell_size), pygame.SRCALPHA, 32),
+            pygame.Surface(((self.max_x - self.min_x + 1) * cell_size, (self.max_y - self.min_y + 1) * cell_size), pygame.SRCALPHA, 32))
+        for segment in self.segments:
+            x = segment.rx - self.min_x
+            y = segment.ry - self.min_y
+            layer = layers[segment.z]
+            layer.blit(segment.render(cell_size - 1, self.color, padding), (x * cell_size + 1, y * cell_size + 1))
+        offset = ((self.x + self.min_x) * cell_size, (self.y + self.min_y) * cell_size)
+        return ((layers[0], offset), (layers[1], offset))
+
 class Level(object):
     def __init__(self, dimensions, blocks, players):
         # (x, y)
@@ -204,6 +227,12 @@ class Level(object):
         self.players = players
         for player in self.players:
             player.level = self
+            coords = player.position()
+            if coords in self.cellmap:
+                # check if valid
+                self.cellmap[coords].append((player, 0))
+            else:
+                self.cellmap[coords] = [(player, 0)]
 
     def add_block(self, block):
         block.level = self
@@ -226,11 +255,11 @@ class Level(object):
             for x in range(self.dim[0]):
                 for y in range(self.dim[1]):
                     layer.blit(DEFAULT_TILE, (x * cell_size, y * cell_size))
-                    if (x, y, z) in self.cellmap:
-                        for block, i in self.cellmap[(x, y, z)]:
-                            segment = block.segments[i]
-                            layer.blit(segment.render(cell_size - 1, block.color, padding), (x * cell_size + 1, y * cell_size + 1))
-
+        
+        for block in self.blocks:
+            renders = block.render(cell_size, padding)
+            layers[0].blit(*renders[0])
+            layers[1].blit(*renders[1])
 
         for player in self.players:
             layers[player.z].blit(player.render(cell_size), (cell_size * player.x, cell_size * player.y))
@@ -243,7 +272,6 @@ class Level(object):
             new_location = (location[0] + direction[0], location[1] + direction[1], location[2])
             if location not in self.cellmap:
                 raise Exception('Moving segment that doesn\'t exist?!')
-            # print(self.cellmap[location])
             self.cellmap[location].remove((block, i))
             if len(self.cellmap[location]) == 0:
                 del self.cellmap[location]
