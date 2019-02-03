@@ -1,4 +1,6 @@
 import pygame
+import time
+from math import sin
 
 from collections import deque
 import planar.constants as constants
@@ -266,6 +268,16 @@ class Level(object):
             else:
                 self.cellmap[coords] = [(block, i)]
 
+    @property
+    def complete(self):
+        for goal in self.goals:
+            for player in self.players:
+                if player.position() == goal:
+                    break
+            else:
+                return False
+        return True
+
     def render(self, cell_size, padding = 1):
         DEFAULT_TILE = pygame.Surface((cell_size, cell_size))
         pygame.draw.rect(DEFAULT_TILE, constants.DEFAULT_TILE_COLOR, [1, 1, cell_size - 1, cell_size - 1], 0)
@@ -283,11 +295,11 @@ class Level(object):
             layers[1].blit(*renders[1])
 
         for goal in self.goals:
-            for radius in reversed(range(cell_size // 3 * 2)):
+            for radius in reversed(range(cell_size // 5 * 2)):
                 tile = pygame.Surface((cell_size, cell_size), pygame.SRCALPHA, 32)
                 tile = tile.convert_alpha()
-                pygame.draw.circle(tile, [(radius * 10) % 255] * 3, [cell_size // 2, cell_size // 2], radius, 0)
-                layers[goal[2]].blit(tile, (cell_size - radius, cell_size - radius))
+                pygame.draw.circle(tile, [round(127 * sin(radius / 8 + time.time() * 2)) + 128] * 3, [cell_size // 2, cell_size // 2], radius, 0)
+                layers[goal[2]].blit(tile, (goal[0], goal[1]))
 
         for player in self.players:
             layers[player.z].blit(player.render(cell_size), (cell_size * player.x, cell_size * player.y))
