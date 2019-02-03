@@ -1,4 +1,4 @@
-directionectionUP = 0
+UP = 0
 RIGHT = 1
 DOWN = 2
 LEFT = 3
@@ -33,23 +33,25 @@ def can_move(grid, pos, direction, celltype, object):
         return True
 
     for segment in segments:
-        (x, y, z, t) = segments[0]
-        (block, index) = segments[1]
+        cell = segment[0]
+        (block, index) = segment[1]
 
         if object == block:
             #if the target cell is part of the block
             continue
 
-        if not block.moveable:
+        if not block.movable:
             return False
 
         if celltype == 0 or is_flat_side(celltype, direction) or is_normal(celltype, t):
             #full block we are attempting to move
-            if direction != block.direction:
+            if ((direction == LEFT or direction == RIGHT) and block.direction == "v") \
+            or ((direction == UP or direction == DOWN) and block.direction == "h"):
+                print("here")
                 return False
             for cell in block.cells:
                 pos = (cell.x, cell.y, cell.z)
-                if not can_move(grid, pos, direction, cell.t, block)
+                if not can_move(grid, pos, direction, cell.t, block):
                     return False
 
         elif celltype == 1:
@@ -100,3 +102,4 @@ def can_move(grid, pos, direction, celltype, object):
                     pos = (cell.x, cell.y, cell.z)
                     if not can_move(grid, pos, DOWN, cell.t, block):
                         return False
+    return True
