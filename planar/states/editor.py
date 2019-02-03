@@ -176,6 +176,6 @@ class EditorState(states.State):
         with open(self.filename.text, "w") as fout:
             fout.write(data)
 
-def load(self, string):
+def load(string):
     with open(string, "r") as fin:
-        return json.loads(fin.read(), cls=planar.serial.GameEncoder)
+        return json.loads(fin.read(), cls=planar.serial.GameDecoder)

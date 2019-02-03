@@ -8,12 +8,12 @@ from planar import Game
 from planar.states.game import GameState
 from planar.states.menu import MenuState
 from planar.tests import *
-from planar.states.editor import EditorState
+from planar.states.editor import EditorState, load
 
 if __name__ == "__main__":
     pygame.init()
 
-    menu_state = EditorState((10,10))
+    menu_state = GameState(load("Filename.txt"))
     game = Game()
     game.push_state(menu_state)
 
