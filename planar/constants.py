@@ -16,3 +16,15 @@ DOWN = (0, 1)
 LEFT = (-1, 0)
 
 DEFAULT_TILE_COLOR = [200, 200, 200]
+
+UNDO_BUFFER = 20
+
+def opposite(direction):
+    if direction == UP:
+        return DOWN
+    if direction == DOWN:
+        return UP
+    if direction == LEFT:
+        return RIGHT
+    if direction == RIGHT:
+        return LEFT

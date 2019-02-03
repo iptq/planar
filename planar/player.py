@@ -37,9 +37,17 @@ class Player(level.Block):
         if res is None:
             return
 
+        moves = [] #used for undo feature
+
         for block, dir in res.items():
             self.level.move_block(block, dir)
+            moves.append( (block, dir) )
 
+        moves.append( (self, direction) )
+        self.level.move_stack.append(moves)
+        self.force_move(direction)
+
+    def force_move(self, direction):
         dx, dy = direction
         self.x += dx
         self.y += dy

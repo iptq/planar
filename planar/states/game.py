@@ -7,6 +7,7 @@ import planar.states as states
 class GameState(states.State):
     def __init__(self, level):
         self.level = level
+        self.undo_buffer = constants.UNDO_BUFFER
 
     def update(self, events):
         for event in events:
@@ -30,6 +31,15 @@ class GameState(states.State):
                     self.level.players[1].try_move(constants.DOWN)
                 elif event.key == pygame.K_l:
                     self.level.players[1].try_move(constants.RIGHT)
+        held_keys = pygame.key.get_pressed()
+        if held_keys[pygame.K_z]:
+            if self.undo_buffer > constants.UNDO_BUFFER:
+                self.level.undo()
+                self.undo_buffer = 0
+            else:
+                self.undo_buffer += 1
+        else:
+            self.undo_buffer = constants.UNDO_BUFFER
 
     def draw(self, screen):
         screen.fill(Color(100, 80, 100))

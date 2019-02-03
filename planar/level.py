@@ -1,5 +1,6 @@
 import pygame
 
+from collections import deque
 import planar.constants as constants
 
 class Segment(object):
@@ -233,6 +234,7 @@ class Level(object):
                 self.cellmap[coords].append((player, 0))
             else:
                 self.cellmap[coords] = [(player, 0)]
+        self.move_stack = deque()
 
     def add_block(self, block):
         block.level = self
@@ -255,7 +257,7 @@ class Level(object):
             for x in range(self.dim[0]):
                 for y in range(self.dim[1]):
                     layer.blit(DEFAULT_TILE, (x * cell_size, y * cell_size))
-        
+
         for block in self.blocks:
             renders = block.render(cell_size, padding)
             layers[0].blit(*renders[0])
@@ -281,3 +283,16 @@ class Level(object):
                 self.cellmap[new_location].append((block, i))
         block.x += direction[0]
         block.y += direction[1]
+
+    def undo(self):
+        if len(self.move_stack) == 0:
+            return
+        moves = self.move_stack.pop()
+        for move in moves:
+            object = move[0]
+            direction = constants.opposite(move[1])
+            if type(object) == Block:
+                self.move_block(object, direction)
+            else:
+                #object is a player
+                object.force_move(direction)
