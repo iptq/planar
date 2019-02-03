@@ -54,6 +54,11 @@ class Block(object):
         self.movable = movable
         self.direction = direction
         self.color = color
+        self.level = None
+
+    def add_segment(self, segment):
+        segment.block = self
+        self.segments.append(segment)
 
     def can_move(self, direction):
         # get direction of target
@@ -90,6 +95,17 @@ class Level(object):
         self.players = players
         for player in self.players:
             player.level = self
+
+    def add_block(self, block):
+        block.level = self
+        self.blocks.append(block)
+        for i, cell in enumerate(block.segments):
+            coords = tuple(cell)
+            if coords in self.cellmap:
+                # check if valid
+                self.cellmap[coords].append((block, i))
+            else:
+                self.cellmap[coords] = [(block, i)]
 
     def render(self, cell_size, padding = 1):
         DEFAULT_TILE = pygame.Surface((cell_size, cell_size))
