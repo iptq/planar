@@ -51,5 +51,14 @@ class Player(level.Block):
         # self.level.move_block(self, direction)
         # self.force_move(direction)
 
-        if not self.level.validate():
-            self.level.undo()
+        movements = {
+            constants.DIRECTION_VERTICAL: set([constants.UP, constants.DOWN]),
+            constants.DIRECTION_HORIZONTAL: set([constants.LEFT, constants.RIGHT]),
+        }
+        for block, d in moves:
+            if block.direction in movements and d not in movements[block.direction]:
+                self.level.undo()
+                break
+        else:
+            if not self.level.validate():
+                self.level.undo()
