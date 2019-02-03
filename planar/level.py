@@ -308,7 +308,7 @@ class Level(object):
                 tile = pygame.Surface((cell_size, cell_size), pygame.SRCALPHA, 32)
                 tile = tile.convert_alpha()
                 pygame.draw.circle(tile, [round(127 * sin(radius / 8 + time.time() * 2)) + 128] * 3, [cell_size // 2, cell_size // 2], radius, 0)
-                layers[goal[2]].blit(tile, (goal[0], goal[1]))
+                layers[goal[2]].blit(tile, (goal[0] * cell_size, goal[1] * cell_size))
 
         for player in self.players:
             layers[player.z].blit(player.render(cell_size), (cell_size * player.x, cell_size * player.y))
@@ -359,13 +359,13 @@ class Level(object):
 
                 import planar.player as player
                 if isinstance(s1, player.Player) or isinstance(s2, player.Player):
-                    # print('player exists with other segment', s1, s2)
+                    print('player exists with other segment', s1, s2)
                     return False
                 if s1.t == 0 or s2.t == 0:
-                    # print('full segment exists with other segment', s1, s2)
+                    print('full segment exists with other segment', s1, s2)
                     return False
                 if abs(s1.t - s2.t) != 2:
-                    # print('conflicting segments exist', s1.t, s2.t)
+                    print('conflicting segments exist', s1.t, s2.t)
                     return False
                 continue
             return False

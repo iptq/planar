@@ -21,7 +21,7 @@ class MenuState(states.State):
                     self.game.running = False
                 elif event.key == pygame.K_SPACE:
                     self.game.cur_level %= len(self.game.levels)
-                    self.game.push_state(planar.states.game.GameState(self.game.levels[self.game.cur_level]))
+                    self.game.push_state(planar.states.game.GameState(self.game.levels[self.game.cur_level]()))
 
     def draw(self, screen):
         # draw background

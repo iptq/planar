@@ -37,6 +37,18 @@ def test1():
         #Segment(0, 0, 0, 0),
         Segment(0, 1, 0, 4)
     ], True, constants.DIRECTION_VERTICAL, [200, 200, 10])
+    block8 = Block((1, 5), [
+        Segment(0, 0, 0, 0),
+        Segment(1, 0, 0, 0),
+        Segment(0, 0, 1, 0),
+        Segment(1, 0, 1, 0)
+    ], True, constants.DIRECTION_HORIZONTAL, [200, 10, 200])
+    block9 = Block((1, 4), [
+        Segment(0, 0, 0, 0),
+        Segment(1, 0, 0, 0),
+        Segment(0, 0, 1, 0),
+        Segment(1, 0, 1, 0)
+    ], True, constants.DIRECTION_HORIZONTAL, [10, 200, 255])
     immovable = Block((0, 0), [
         Segment(0, 7, 0, 0),
         Segment(1, 7, 0, 0),
@@ -44,8 +56,8 @@ def test1():
         Segment(5, 2, 0, 0),
         Segment(6, 2, 0, 0),
         Segment(7, 2, 0, 0)
-    ], True, constants.DIRECTION_BOTH, [0, 0, 0])
-    return Level((8, 8), [block, block2, block3, block4, block5, block6, block7, immovable], [
+    ], False, constants.DIRECTION_BOTH, [0, 0, 0])
+    return Level((8, 8), [block, block2, block3, block4, block5, block6, block7, block8, block9, immovable], [
         Player(6, 6, 0, [66, 134, 244]),
         Player(6, 6, 1, [244, 83, 65])
     ], [
@@ -193,4 +205,147 @@ def test3():
     (0,0,1)
 ])
 
-levels = [test1(), test3()]
+def test2():
+    return Level((8, 8), [
+    Block([6,5],[
+        Segment(0, -1, 0, 2),
+        Segment(0, 0, 0, 0),
+    ], True, constants.DIRECTION_VERTICAL, [255, 10, 100]),
+    Block([6,3],[
+        Segment(0, 0, 1, 4),
+        Segment(-1, 0, 1, 0),
+        Segment(0, 0, 0, 4),
+        Segment(-1, 0, 0, 0),
+        Segment(-2,0,0,2),
+        Segment(-2,0,1,2)
+    ], True, constants.DIRECTION_HORIZONTAL, [0, 255, 100]),
+    Block([6,2],[
+        Segment(0, 0, 1, 4),
+        Segment(0, -1, 1, 0),
+        Segment(0, 0, 0, 4),
+        Segment(0, -1, 0, 0)
+    ], True, constants.DIRECTION_VERTICAL, [20, 25, 100]),
+    Block([7,4],[
+        Segment(0,0,0,0),
+        Segment(0,0,1,0),
+        Segment(0,1,0,0),
+        Segment(0,1,1,0),
+        Segment(0,2,0,0),
+        Segment(0,2,1,0),
+        Segment(0,3,0,0),
+        Segment(0,3,1,0)
+    ], False, 0 , [0,0,0]),
+    Block([3,5],[
+        Segment(0,0,0,4),
+        Segment(0,0,1,4),
+        Segment(-1,0,0,0),
+        Segment(-1,0,1,0),
+        Segment(-2,0,0,0),
+        Segment(-2,0,1,0)
+    ], True, constants.DIRECTION_HORIZONTAL, [110,30,230]),
+    Block([2,0],[
+        Segment(0,0,0,0),
+        Segment(0,0,1,0),
+        Segment(0,1,0,0),
+        Segment(0,1,1,0),
+        Segment(0,2,0,0),
+        Segment(0,2,1,0),
+        Segment(0,3,0,0),
+        Segment(0,3,1,0)
+    ], False, 0 , [0,0,0]),
+    Block([3,5],[
+        Segment(0,0,0,2),
+        Segment(0,1,0,0),
+    ], True, constants.DIRECTION_VERTICAL, [240,50,60]),
+    Block([3,3],[
+        Segment(0,0,1,4),
+        Segment(0,-1,1,0)
+    ], True, constants.DIRECTION_VERTICAL, [120,220,20]),
+    Block([4,4],[
+        Segment(0,0,0,0),
+        Segment(0,0,1,0),
+        Segment(0,1,0,0),
+        Segment(0,1,1,0),
+        Segment(0,2,0,0),
+        Segment(0,2,1,0),
+        Segment(0,3,0,0),
+        Segment(0,3,1,0)
+    ], False, 0 , [0,0,0])
+], [
+    Player(5, 5, 0, [66, 134, 244]),
+    Player(5, 5, 1, [244, 83, 65])
+], [
+    (0,0,0),
+    (0,0,1)
+])
+
+#Tutorial Level 1
+def testTut():
+    return Level((3,7),[
+    Block([1,3],[
+        Segment(0,0,0,0),
+        Segment(1,0,0,4)
+    ], True, constants.DIRECTION_HORIZONTAL, [255, 10, 100]),
+    Block([2,4],[
+        Segment(0,0,0,2),
+        Segment(0,1,0,0)
+    ], True, constants.DIRECTION_VERTICAL, [105, 210, 50]),
+    Block([0,4],[
+        Segment(0,0,1,1),
+        Segment(0,1,1,0)
+    ], True, constants.DIRECTION_VERTICAL, [35, 150, 100]),
+    Block([0,2],[
+        Segment(0,0,0,0)
+    ], False, constants.DIRECTION_BOTH, [0, 0, 0]),
+    Block([2,2],[
+        Segment(0,0,1,0)
+    ], False, constants.DIRECTION_BOTH, [0, 0, 0]),
+    Block([0,3],[
+        Segment(0,0,1,3),
+        Segment(1,0,1,0)
+    ], True, constants.DIRECTION_HORIZONTAL, [25, 120, 10]),
+], [
+    Player(1, 6, 0, [66, 134, 244]),
+    Player(1, 6, 1, [244, 83, 65])
+], [
+    (1,0,0),
+    (1,0,1)
+])
+
+
+#Tutorial Level 2
+def testTut2():
+    return Level((4,8),[
+    Block([0,2],[
+        Segment(0,0,0,0),
+        Segment(3,0,0,0),
+        Segment(0,2,0,0),
+        Segment(3,2,0,0),
+        Segment(0,0,1,0),
+        Segment(3,0,1,0),
+        Segment(0,2,1,0),
+        Segment(3,4,0,0),
+        Segment(0,4,1,0),
+        Segment(3,4,1,0)
+    ], False, constants.DIRECTION_HORIZONTAL, [0, 0, 0]),
+    Block((1, 5), [
+        Segment(0, 0, 0, 0),
+        Segment(1, 0, 0, 4),
+        Segment(0, 0, 1, 0),
+        Segment(1, 0, 1, 4)
+    ], True, constants.DIRECTION_HORIZONTAL, [255, 10, 100]),
+     Block((1, 3), [
+        Segment(0, 0, 0, 3),
+        Segment(1, 0, 0, 0),
+        Segment(0, 0, 1, 3),
+        Segment(1, 0, 1, 0)
+    ], True, constants.DIRECTION_HORIZONTAL, [255, 10, 100])
+], [
+    Player(1, 7, 0, [66, 134, 244]),
+    Player(1, 7, 1, [244, 83, 65])
+], [
+    (0,0,0),
+    (0,0,1)
+])
+
+levels = [testTut, testTut2, test1, test2, test3]
