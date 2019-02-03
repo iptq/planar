@@ -1,7 +1,7 @@
 import sys
 
-import level
-import constants
+import planar.level as level
+import planar.constants as constants
 
 import pygame
 from pygame.locals import *
@@ -14,7 +14,11 @@ background = pygame.Surface(screen.get_size())
 background = background.convert()
 background.fill((250, 250, 250))
 
-lvl = Level((10, 10), [], [])
+lvl = level.Level((10, 10), [
+    level.Block([
+        level.Segment(0, 0, 0, 1)
+    ], True, 0, [255, 10, 100])
+], [])
 
 while 1:
     for event in pygame.event.get():
@@ -22,6 +26,6 @@ while 1:
             sys.exit(0)
 
     screen.blit(background, (0, 0))
-    renders = lvl.render(50)
+    renders = lvl.render(50, 2)
     screen.blit(renders[0], (0, 0))
     pygame.display.flip()
