@@ -58,5 +58,5 @@ class GameState(states.State):
 
         left, right = self.level.render(scale)
 
-        screen.blit(left, (2 * scale, yoff + 2 * scale))
+        screen.blit(left, (xoff + 2 * scale, yoff + 2 * scale))
         screen.blit(right, (xoff + (4 + self.level.dim[0]) * scale, yoff + 2 * scale))
