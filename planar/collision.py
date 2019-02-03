@@ -5,6 +5,8 @@ RIGHT = 1
 DOWN = 2
 LEFT = 3
 
+################################################################################
+
 def is_flat_side(celltype, direction):
     result = (celltype == 1 and (direction == DOWN or direction == LEFT)) \
         or (celltype == 2 and (direction == DOWN or direction == RIGHT)) \
@@ -22,7 +24,7 @@ def is_normal(celltype, other):
 def can_move(grid, pos, direction, celltype, object):
     # object is the object doing the moving, so that a block does not check
     # collisions with itself
-    target = (0,0,0)
+    target = (0, 0, 0)
     if direction == UP:
         target = (pos[0], pos[1]-1, pos[2])
     elif direction == DOWN:

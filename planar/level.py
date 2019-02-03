@@ -4,8 +4,8 @@ import planar.constants
 
 class Segment(object):
     def __init__(self, x, y, z, t):
-        self.x = x
-        self.y = y
+        self.rx = x
+        self.ry = y
         self.z = z
 
         # t is the type of the block
@@ -15,11 +15,17 @@ class Segment(object):
         # \34/
         #  \/
         self.t = t
+        self.block = None
 
     def __iter__(self):
-        yield self.x
-        yield self.y
+        x, y = self.position
+        yield x
+        yield y
         yield self.z
+
+    @property
+    def position(self):
+        return (self.block.x + self.rx, self.block.y + self.ry)
 
     def render(self, cell_size, color, padding = 1):
         tile = pygame.Surface((cell_size, cell_size), pygame.SRCALPHA, 32)
@@ -39,14 +45,37 @@ class Segment(object):
         return tile
 
 class Block(object):
-    def __init__(self, segments, movable, direction, color):
-        self.segments = segments
+    def __init__(self, pos, movable, direction, color):
+        self.x = pos[0]
+        self.y = pos[1]
+        self.segments = []
         self.movable = movable
         self.direction = direction
         self.color = color
 
+    def add_segment(self, segment):
+        segment.block = self
+        self.segments.append(segment)
+
+    def can_move(self, direction):
+        # get direction of target
+        dx, dy = direction
+        target = (self.x + dx, self.y + dy, self.z)
+
+        # is the target even in the map?
+        if target[0] < 0 or target[0] >= self.level.dim[0] or target[1] < 0 or target[1] >= self.level.dim[1]:
+            return None
+
+        # check if there's anything at target
+        occupants = self.level.cellmap.get(target)
+        if occupants is None:
+            # nothing there, we're good to go!
+            return []
+
+        return None
+
 class Level(object):
-    def __init__(self, dimensions, blocks, players):
+    def __init__(self, dimensions, blocks):
         # (x, y)
         self.dim = dimensions
         self.cellmap = {}
@@ -60,7 +89,11 @@ class Level(object):
                     self.cellmap[coords] = [(block, i)]
 
         self.blocks = blocks
-        self.players = players
+        self.players = []
+
+    def add_player(self, player):
+        player.level = self
+        self.players.append(player)
 
     def render(self, cell_size, padding = 1):
         DEFAULT_TILE = pygame.Surface((cell_size, cell_size))
