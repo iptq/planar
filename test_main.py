@@ -20,7 +20,8 @@ lvl = level.Level((10, 10), [
         level.Segment(0, 1, 0, 0)
     ], True, 0, [255, 10, 100])
 ], [
-    level.Player(5, 5, 0, [66, 134, 244])
+    level.Player(5, 5, 0, [66, 134, 244]),
+    level.Player(5, 5, 1, [244, 83, 65])
 ])
 
 while 1:
@@ -36,8 +37,17 @@ while 1:
                 lvl.players[0].y += 1
             elif event.unicode == 'd':
                 lvl.players[0].x += 1
+            elif event.unicode == 'i':
+                lvl.players[1].y -= 1
+            elif event.unicode == 'j':
+                lvl.players[1].x -= 1
+            elif event.unicode == 'k':
+                lvl.players[1].y += 1
+            elif event.unicode == 'l':
+                lvl.players[1].x += 1
 
     screen.blit(background, (0, 0))
     renders = lvl.render(50, 2)
     screen.blit(renders[0], (0, 0))
+    screen.blit(renders[1], (50 * 15, 0))
     pygame.display.flip()
