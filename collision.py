@@ -90,14 +90,14 @@ def can_move(grid, pos, direction, celltype, object):
                     pos = (cell.x, cell.y, cell.z)
                     if not can_move(grid, pos, DOWN, cell.t, block):
                         return False
-        elif cellcelltype == 4:
+        elif celltype == 4:
             #gauranteed to be moing down or right questionable block
             if direction == DOWN:
                 for cell in block.cells:
                     pos = (cell.x, cell.y, cell.z)
                     if not can_move(grid, pos, RIGHT, cell.t, block):
                         return False
-            if dir == RIGHT:
+            if direction == RIGHT:
                 for cell in block.cells:
                     pos = (cell.x, cell.y, cell.z)
                     if not can_move(grid, pos, DOWN, cell.t, block):

@@ -45,9 +45,9 @@ class Segment(object):
         tile = pygame.Surface((cell_size, cell_size), pygame.SRCALPHA, 32)
         tile = tile.convert_alpha()
         a = padding
-        b = cell_size - a
+        b = cell_size - a - 1
         if self.t == 0:
-            pygame.draw.rect(tile, color, [a, a, b - 1, b - 1], 0)
+            pygame.draw.rect(tile, color, [a, a, b - a + 1, b - a + 1], 0)
         elif self.t == 1:
             pygame.draw.polygon(tile, color, [[a, a], [a, b], [b, b]], 0)
         elif self.t == 2:
@@ -82,7 +82,7 @@ class Level(object):
         self.blocks = blocks
         self.players = players
 
-    def render(self, cell_size, a = 1):
+    def render(self, cell_size, padding = 1):
         DEFAULT_TILE = pygame.Surface((cell_size, cell_size))
         pygame.draw.rect(DEFAULT_TILE, DEFAULT_TILE_COLOR, [1, 1, cell_size - 1, cell_size - 1], 0)
         layers = (pygame.Surface(tuple(cell_size * i + 1 for i in self.dim)),
@@ -95,7 +95,7 @@ class Level(object):
                     if (x, y, z) in self.cellmap:
                         for block, i in self.cellmap[(x, y, z)]:
                             segment = block.segments[i]
-                            layer.blit(segment.render(cell_size, block.color, a), (x * cell_size, y * cell_size))
+                            layer.blit(segment.render(cell_size - 1, block.color, padding), (x * cell_size + 1, y * cell_size + 1))
 
 
         for player in self.players:

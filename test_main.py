@@ -47,7 +47,7 @@ while 1:
                 lvl.players[1].x += 1
 
     screen.blit(background, (0, 0))
-    renders = lvl.render(50, 2)
+    renders = lvl.render(50, 3)
     screen.blit(renders[0], (0, 0))
     screen.blit(renders[1], (50 * 15, 0))
     pygame.display.flip()
