@@ -1,16 +1,22 @@
 import pygame
 from pygame import Color
 
-import planar.states
+import planar.states as states
 import planar.constants as constants
+from planar.states.levels import LevelSelectState
 
 COLOR1 = Color(32, 32, 32)
 COLOR2 = Color(36, 36, 36)
 WHITE = Color(255, 255, 255)
 
-class MenuState(planar.states.State):
-    def __init__(self):
-        pass
+class MenuState(states.State):
+    def update(self, events):
+        for event in events:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_p:
+                    self.game.push_state(LevelSelectState())
+                elif event.key == pygame.K_ESCAPE:
+                    self.game.running = False
 
     def draw(self, screen):
         # draw background
