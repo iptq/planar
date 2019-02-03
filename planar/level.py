@@ -2,6 +2,10 @@ import pygame
 
 DIRECTION_HORIZONTAL = 0
 DIRECTION_VERTICAL = 1
+UP = 0
+RIGHT = 1
+DOWN = 2
+LEFT = 3
 
 DEFAULT_TILE_COLOR = [200, 200, 200]
 
@@ -92,11 +96,9 @@ class Level(object):
                         for block, i in self.cellmap[(x, y, z)]:
                             segment = block.segments[i]
                             layer.blit(segment.render(cell_size, block.color, a), (x * cell_size, y * cell_size))
-                        
+
 
         for player in self.players:
             layers[player.z].blit(player.render(cell_size), (cell_size * player.x, cell_size * player.y))
 
         return layers
-
-    
