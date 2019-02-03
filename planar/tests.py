@@ -68,7 +68,7 @@ def test3():
         Segment(-1,0,1,0),
         Segment(-2,0,0,0),
         Segment(-2,0,1,0)
-    ], False, 0 , [110,30,230]),
+    ], True, constants.DIRECTION_HORIZONTAL, [110,30,230]),
     Block([2,0],[
         Segment(0,0,0,0),
         Segment(0,0,1,0),
@@ -82,9 +82,10 @@ def test3():
     Block([3,5],[
         Segment(0,0,0,2),
         Segment(0,1,0,0),
-    ], False, 0 , [240,50,60]),
+    ], True, constants.DIRECTION_VERTICAL, [240,50,60]),
     Block([3,3],[
-        Segment(0,0,1,4)
+        Segment(0,0,1,4),
+        Segment(0,-1,1,0)
     ], True, constants.DIRECTION_VERTICAL, [120,220,20]),
     Block([4,4],[
         Segment(0,0,0,0),

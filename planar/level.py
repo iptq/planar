@@ -210,6 +210,21 @@ class Block(object):
             y = segment.ry - self.min_y
             layer = layers[segment.z]
             layer.blit(segment.render(cell_size - 1, self.color, padding), (x * cell_size + 1, y * cell_size + 1))
+        for layer in layers:
+            pixels = pygame.surfarray.pixels3d(layer)
+            stripe_dist = 10
+            if self.movable:
+                if self.direction == constants.DIRECTION_VERTICAL:
+                    for x in range(0, len(pixels), stripe_dist):
+                        for y in range(len(pixels[0])):
+                            for i in range(3):
+                                pixels[x][y][i] = 255
+                elif self.direction == constants.DIRECTION_HORIZONTAL:
+                    for y in range(0, len(pixels[0]), stripe_dist):
+                        for x in range(len(pixels)):
+                            for i in range(3):
+                                pixels[x][y][i] = 255
+
         offset = ((self.x + self.min_x) * cell_size, (self.y + self.min_y) * cell_size)
         return ((layers[0], offset), (layers[1], offset))
 
