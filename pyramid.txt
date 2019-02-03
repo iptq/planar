@@ -1,0 +1,316 @@
+{
+  "type": "level",
+  "w": 5,
+  "h": 5,
+  "blocks": [
+    {
+      "type": "block",
+      "x": 0,
+      "y": 0,
+      "segments": [
+        {
+          "type": "segment",
+          "rx": 6,
+          "ry": 6,
+          "z": 0,
+          "t": 0
+        }
+      ],
+      "movable": true,
+      "direction": 0,
+      "color": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "type": "block",
+      "x": 2,
+      "y": 3,
+      "segments": [
+        {
+          "type": "segment",
+          "rx": 0,
+          "ry": 0,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -1,
+          "ry": 1,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": 1,
+          "ry": 1,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": 1,
+          "ry": 0,
+          "z": 0,
+          "t": 1
+        },
+        {
+          "type": "segment",
+          "rx": -1,
+          "ry": 0,
+          "z": 0,
+          "t": 2
+        },
+        {
+          "type": "segment",
+          "rx": -2,
+          "ry": 1,
+          "z": 0,
+          "t": 2
+        },
+        {
+          "type": "segment",
+          "rx": 2,
+          "ry": 1,
+          "z": 0,
+          "t": 1
+        }
+      ],
+      "movable": true,
+      "direction": 1,
+      "color": [
+        220,
+        220,
+        0
+      ]
+    },
+    {
+      "type": "block",
+      "x": 2,
+      "y": 0,
+      "segments": [
+        {
+          "type": "segment",
+          "rx": 0,
+          "ry": 0,
+          "z": 0,
+          "t": 4
+        },
+        {
+          "type": "segment",
+          "rx": 1,
+          "ry": 1,
+          "z": 1,
+          "t": 0
+        }
+      ],
+      "movable": true,
+      "direction": 0,
+      "color": [
+        0,
+        220,
+        0
+      ]
+    },
+    {
+      "type": "block",
+      "x": 1,
+      "y": 0,
+      "segments": [
+        {
+          "type": "segment",
+          "rx": 0,
+          "ry": 0,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": 1,
+          "ry": 4,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": 0,
+          "ry": 1,
+          "z": 0,
+          "t": 4
+        }
+      ],
+      "movable": true,
+      "direction": 0,
+      "color": [
+        0,
+        12,
+        150
+      ]
+    },
+    {
+      "type": "block",
+      "x": 3,
+      "y": 0,
+      "segments": [
+        {
+          "type": "segment",
+          "rx": 1,
+          "ry": 1,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -2,
+          "ry": 3,
+          "z": 1,
+          "t": 3
+        },
+        {
+          "type": "segment",
+          "rx": -1,
+          "ry": 3,
+          "z": 1,
+          "t": 0
+        }
+      ],
+      "movable": true,
+      "direction": 1,
+      "color": [
+        200,
+        12,
+        100
+      ]
+    },
+    {
+      "type": "block",
+      "x": 1,
+      "y": 1,
+      "segments": [
+        {
+          "type": "segment",
+          "rx": 0,
+          "ry": 0,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": 3,
+          "ry": -1,
+          "z": 1,
+          "t": 0
+        }
+      ],
+      "movable": false,
+      "direction": 0,
+      "color": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "block",
+      "x": 2,
+      "y": 1,
+      "segments": [
+        {
+          "type": "segment",
+          "rx": 0,
+          "ry": 0,
+          "z": 0,
+          "t": 3
+        },
+        {
+          "type": "segment",
+          "rx": -1,
+          "ry": 2,
+          "z": 1,
+          "t": 1
+        },
+        {
+          "type": "segment",
+          "rx": -2,
+          "ry": 2,
+          "z": 1,
+          "t": 2
+        }
+      ],
+      "movable": true,
+      "direction": 0,
+      "color": [
+        255,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "block",
+      "x": 0,
+      "y": 1,
+      "segments": [
+        {
+          "type": "segment",
+          "rx": 0,
+          "ry": 0,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": 0,
+          "ry": 1,
+          "z": 1,
+          "t": 4
+        }
+      ],
+      "movable": true,
+      "direction": 1,
+      "color": [
+        100,
+        100,
+        200
+      ]
+    }
+  ],
+  "players": [
+    {
+      "type": "player",
+      "x": 2,
+      "y": 4,
+      "z": 0,
+      "color": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "player",
+      "x": 2,
+      "y": 0,
+      "z": 1,
+      "color": [
+        0,
+        0,
+        0
+      ]
+    }
+  ],
+  "goals": [
+    [
+      2,
+      1,
+      0
+    ],
+    [
+      2,
+      4,
+      1
+    ]
+  ]
+}

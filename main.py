@@ -13,7 +13,6 @@ from planar.states.editor import EditorState, load
 if __name__ == "__main__":
     pygame.init()
 
-    menu_state = GameState(load("Filename.txt"))
     game = Game()
     game.push_state(MenuState())
     if len(sys.argv) > 1:

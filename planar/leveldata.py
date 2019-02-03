@@ -1,6 +1,7 @@
 import planar.constants as constants
 from planar.player import Player
 from planar.level import Level, Block, Segment
+from planar.states.editor import load
 
 def test1():
     block = Block((4, 4), [
@@ -348,4 +349,7 @@ def testTut2():
     (0,0,1)
 ])
 
-levels = [testTut, testTut2, test1, test2, test3]
+def pyramid():
+    return load("pyramid.txt")
+
+levels = [testTut, testTut2, test1, test2, test3, pyramid]
