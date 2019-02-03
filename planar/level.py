@@ -1,13 +1,6 @@
 import pygame
 
-DIRECTION_HORIZONTAL = 0
-DIRECTION_VERTICAL = 1
-UP = 0
-RIGHT = 1
-DOWN = 2
-LEFT = 3
-
-DEFAULT_TILE_COLOR = [200, 200, 200]
+import planar.constants
 
 class Player(object):
     def __init__(self, x, y, z, color):
@@ -84,7 +77,7 @@ class Level(object):
 
     def render(self, cell_size, padding = 1):
         DEFAULT_TILE = pygame.Surface((cell_size, cell_size))
-        pygame.draw.rect(DEFAULT_TILE, DEFAULT_TILE_COLOR, [1, 1, cell_size - 1, cell_size - 1], 0)
+        pygame.draw.rect(DEFAULT_TILE, planar.constants.DEFAULT_TILE_COLOR, [1, 1, cell_size - 1, cell_size - 1], 0)
         layers = (pygame.Surface(tuple(cell_size * i + 1 for i in self.dim)),
                 pygame.Surface(tuple(cell_size * i + 1 for i in self.dim)))
         for z in range(2):

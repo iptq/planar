@@ -18,7 +18,10 @@ lvl = level.Level((10, 10), [
     level.Block([
         level.Segment(0, 0, 0, 1),
         level.Segment(0, 1, 0, 0)
-    ], True, 0, [255, 10, 100])
+    ], True, constants, [255, 10, 100]),
+    level.Block([
+        level.Segment(8, 0, 1, 0)
+    ], False, 0, [0, 255, 100])
 ], [
     level.Player(5, 5, 0, [66, 134, 244]),
     level.Player(5, 5, 1, [244, 83, 65])
@@ -47,7 +50,7 @@ while 1:
                 lvl.players[1].x += 1
 
     screen.blit(background, (0, 0))
-    renders = lvl.render(50, 3)
+    renders = lvl.render(50, 1)
     screen.blit(renders[0], (0, 0))
     screen.blit(renders[1], (50 * 15, 0))
     pygame.display.flip()
