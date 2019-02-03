@@ -31,8 +31,14 @@ class Segment(object):
         x, y = self.position
         return "Segment[{}] ({}, {}, {})".format(self.t, x, y, self.z)
 
-    def can_move(self, direction):
+    def __repr__(self):
+        return str(self)
+
+    def can_move(self, direction, depth=0):
+        opposites = { 1: 3, 3: 1, 2: 4, 4: 2 }
+
         sx, sy = self.position
+        curr = (sx, sy, self.z)
 
         # get direction of target
         dx, dy = direction
@@ -42,29 +48,65 @@ class Segment(object):
         if target[0] < 0 or target[0] >= self.block.level.dim[0] or target[1] < 0 or target[1] >= self.block.level.dim[1]:
             return None
 
+        # first check if this is a triangle and if there's another triangle in this cell
+        curr_occupants = self.block.level.cellmap.get(curr)
+        if self.t != 0 and len(curr_occupants) == 2:
+            other = None
+            for (block, i) in curr_occupants:
+                if self.block != block:
+                    other = (block, i)
+                    break
+            assert other is not None
+
+            # check if we're actually pushing in that direction
+            all_directions = set([constants.LEFT, constants.DOWN, constants.RIGHT, constants.UP])
+            directions = [0, constants.LEFT, constants.DOWN, constants.RIGHT, constants.UP, constants.LEFT]
+            movements = {
+                constants.DIRECTION_VERTICAL: set([constants.UP, constants.DOWN]),
+                constants.DIRECTION_HORIZONTAL: set([constants.LEFT, constants.RIGHT]),
+            }
+
+            opposite = opposites[self.t]
+            possible = set(directions[opposite:opposite + 2])
+            valid = all_directions - possible
+
+            # print("{}direction: {}, possible: {}".format(depth * " ", direction, possible))
+            if direction in possible:
+                intersection = possible.intersection(movements[other[0].direction])
+                assert len(intersection) == 1
+                new_direction = list(intersection)[0]
+
+                # print("{}(C) {} calling {}.can_move({})".format(depth * " ", self, other[0], new_direction))
+                res = other[0].can_move(new_direction, depth=depth+1)
+                if res is None:
+                    return None
+                else:
+                    res.update({other[0]: new_direction})
+                    return res
+
         # check if there's anything at target
         occupants = self.block.level.cellmap.get(target)
         if occupants is None:
             # nothing there, we're good to go!
-            return []
+            return {}
         elif len(occupants) == 1:
             (occupant, i) = occupants[0]
-            if self == occupant:
-                return []
+            if self.block == occupant:
+                return {}
             else:
-                print(str(self), str(occupant.segments[i]))
                 if self.t == 0:
                     # if this is a rectangle, then we can just push normally
-                    res = occupant.can_move(direction)
+                    res = occupant.can_move(direction, depth=depth+1)
                     if res is None:
                         return None
                     else:
-                        res.append((occupant, direction))
+                        res.update({occupant: direction})
                         return res
                 else:
-                    # if this is a triangle, first we need to check if the current block has 2 occupants
-                    curr_occupants = self.block.level.cellmap.get((sx, sy, self.z))
-                    print("curr:", curr_occupants)
+                    # check if the thing we're pushing into is a perfectly opposite triangle
+                    seg = occupant.segments[i]
+                    if seg.t == opposites[self.t]:
+                        return {}
         elif len(occupants) == 2:
             ind = [constants.UP, constants.LEFT, constants.DOWN, constants.RIGHT].index(direction)
             closer_shapes = [1, 2, 3, 4, 1][ind:ind+2]
@@ -77,12 +119,12 @@ class Segment(object):
                     farther = (occ, i)
             assert closer is not None and farther is not None
 
-            if closer == self.block:
-                return []
+            if closer[0] == self.block:
+                return {}
 
-            print("calling {}.can_move".format(closer[0]))
-            # res = closer[0].can_move(direction)
-            # print("result:", res)
+            # print("{}(A) {} calling {}.can_move({})".format(depth * " ", self, closer[0], direction))
+            res = closer[0].can_move(direction, depth=depth+1)
+            # print("{}  ) = {}".format(depth * " ", res))
 
     def render(self, cell_size, color, padding = 1):
         tile = pygame.Surface((cell_size, cell_size), pygame.SRCALPHA, 32)
@@ -120,22 +162,27 @@ class Block(object):
     def __str__(self):
         return "Block [" + ", ".join(map(str, self.segments)) + "]"
 
-    def can_move(self, direction):
+    def __repr__(self):
+        return str(self)
+
+    def can_move(self, direction, depth=0):
         if self.direction == constants.DIRECTION_HORIZONTAL and (direction == constants.UP or direction == constants.DOWN):
             return None
         if self.direction == constants.DIRECTION_VERTICAL and (direction == constants.LEFT or direction == constants.RIGHT):
             return None
 
-        result = []
+        result = {}
+        failed = False
         for segment in self.segments:
-            print("calling {}.can_move".format(segment))
-            x = segment.can_move(direction)
-            if x is None:
-                result = None
-                break
+            # print("{}(B) {} calling {}.can_move({})".format(depth * " ", self, segment, direction))
+            res = segment.can_move(direction, depth=depth+1)
+            # print("{}  ) = {}".format(depth * " ", res))
+            if res is None:
+                failed = True
             else:
-                result.extend(x)
+                result.update(res)
 
+        if failed: return None
         return result
 
 class Level(object):
@@ -196,7 +243,7 @@ class Level(object):
             new_location = (location[0] + direction[0], location[1] + direction[1], location[2])
             if location not in self.cellmap:
                 raise Exception('Moving segment that doesn\'t exist?!')
-            print(self.cellmap[location])
+            # print(self.cellmap[location])
             self.cellmap[location].remove((block, i))
             if len(self.cellmap[location]) == 0:
                 del self.cellmap[location]

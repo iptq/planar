@@ -6,12 +6,12 @@ import sys
 
 from planar import Game
 from planar.states.game import GameState
-from planar.tests import test1
+from planar.tests import *
 
 if __name__ == "__main__":
     pygame.init()
 
-    menu_state = GameState(test1())
+    menu_state = GameState(test2())
     game = Game()
     game.push_state(menu_state)
 

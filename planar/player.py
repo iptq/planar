@@ -34,8 +34,7 @@ class Player(level.Block):
         if res is None:
             return
 
-        # TODO: move all the other blocks
-        for block, dir in res:
+        for block, dir in res.items():
             self.level.move_block(block, dir)
 
         dx, dy = direction
