@@ -1,4 +1,5 @@
 import pygame
+import copy
 from pygame import Color
 
 import planar.constants as constants
@@ -6,6 +7,7 @@ import planar.states as states
 
 class GameState(states.State):
     def __init__(self, level):
+        self.original = copy.deepcopy(level)
         self.level = level
 
     def update(self, events):
@@ -14,6 +16,8 @@ class GameState(states.State):
                 if event.key == pygame.K_ESCAPE:
                     self.game.pop_state()
 
+                elif event.key == pygame.K_r:
+                    self.level = copy.deepcopy(self.original)
                 elif event.key == pygame.K_w:
                     self.level.players[0].try_move(constants.UP)
                 elif event.key == pygame.K_a:
