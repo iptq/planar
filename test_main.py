@@ -22,5 +22,6 @@ while 1:
             sys.exit(0)
 
     screen.blit(background, (0, 0))
-    map_layer = pygame.Surface(lvl.dim)
+    renders = lvl.render(50)
+    screen.blit(renders[0], (0, 0))
     pygame.display.flip()
