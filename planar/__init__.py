@@ -31,11 +31,12 @@ class Game(object):
                 if event.type == pygame.QUIT:
                     self.running = False
                     break
-            for state in reversed(self.states):
-                state.update(events)
 
-            # draw topmost state
             if self.states:
+                # update topmost state
+                self.states[-1].update(events)
+
+                # draw topmost state
                 for state in reversed(self.states):
                     state.draw(self.screen)
                     if not state.transparent:

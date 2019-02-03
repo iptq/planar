@@ -13,10 +13,10 @@ class MenuState(states.State):
     def update(self, events):
         for event in events:
             if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_p:
-                    self.game.push_state(LevelSelectState())
-                elif event.key == pygame.K_ESCAPE:
+                if event.key == pygame.K_ESCAPE:
                     self.game.running = False
+                elif event.key == pygame.K_p:
+                    self.game.push_state(LevelSelectState())
 
     def draw(self, screen):
         # draw background
