@@ -328,7 +328,7 @@ def testTut2():
         Segment(3,4,0,0),
         Segment(0,4,1,0),
         Segment(3,4,1,0)
-    ], False, constants.DIRECTION_HORIZONTAL, [0, 0, 0]),
+    ], False, constants.DIRECTION_BOTH, [0, 0, 0]),
     Block((1, 5), [
         Segment(0, 0, 0, 0),
         Segment(1, 0, 0, 4),

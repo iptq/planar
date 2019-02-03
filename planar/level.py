@@ -148,6 +148,10 @@ class Segment(object):
         b = cell_size - a - 1
         if self.t == 0:
             pygame.draw.rect(tile, color, [a, a, b - a + 1, b - a + 1], 0)
+            if self.block.direction == constants.DIRECTION_HORIZONTAL:
+                pygame.draw.line(tile, [255, 255, 255], (a, (a + b) / 2), (b, (a + b) / 2))
+            elif self.block.direction == constants.DIRECTION_VERTICAL:
+                pygame.draw.line(tile, [255, 255, 255], ((a + b) / 2, a), ((a + b) / 2, b))
         elif self.t == 1:
             pygame.draw.polygon(tile, color, [[a, a], [a, b], [b, b]], 0)
         elif self.t == 2:
@@ -156,6 +160,14 @@ class Segment(object):
             pygame.draw.polygon(tile, color, [[a, a], [b, a], [b, b]], 0)
         elif self.t == 4:
             pygame.draw.polygon(tile, color, [[a, a], [b, a], [a, b]], 0)
+        if (self.t == 2 or self.t == 3) and self.block.direction == constants.DIRECTION_HORIZONTAL:
+            pygame.draw.line(tile, [255, 255, 255], ((a + b) / 2, (a + b) / 2), (b, (a + b) / 2))
+        if (self.t == 1 or self.t == 4) and self.block.direction == constants.DIRECTION_HORIZONTAL:
+            pygame.draw.line(tile, [255, 255, 255], (a, (a + b) / 2), ((a + b) / 2, (a + b) / 2))
+        if (self.t == 3 or self.t == 4) and self.block.direction == constants.DIRECTION_VERTICAL:
+            pygame.draw.line(tile, [255, 255, 255], ((a + b) / 2, a), ((a + b) / 2, (a + b) / 2))
+        if (self.t == 1 or self.t == 2) and self.block.direction == constants.DIRECTION_VERTICAL:
+            pygame.draw.line(tile, [255, 255, 255], ((a + b) / 2, (a + b) / 2), ((a + b) / 2, b))
         return tile
 
 class Block(object):
@@ -221,20 +233,20 @@ class Block(object):
             y = segment.ry - self.min_y
             layer = layers[segment.z]
             layer.blit(segment.render(cell_size - 1, self.color, padding), (x * cell_size + 1, y * cell_size + 1))
-        for layer in layers:
-            pixels = pygame.surfarray.pixels3d(layer)
-            stripe_dist = 10
-            if self.movable:
-                if self.direction == constants.DIRECTION_VERTICAL:
-                    for x in range(0, len(pixels), stripe_dist):
-                        for y in range(len(pixels[0])):
-                            for i in range(3):
-                                pixels[x][y][i] = 255
-                elif self.direction == constants.DIRECTION_HORIZONTAL:
-                    for y in range(0, len(pixels[0]), stripe_dist):
-                        for x in range(len(pixels)):
-                            for i in range(3):
-                                pixels[x][y][i] = 255
+        # for layer in layers:
+        #     pixels = pygame.surfarray.pixels3d(layer)
+        #     stripe_dist = 10
+        #     if self.movable:
+        #         if self.direction == constants.DIRECTION_VERTICAL:
+        #             for x in range(0, len(pixels), stripe_dist):
+        #                 for y in range(len(pixels[0])):
+        #                     for i in range(3):
+        #                         pixels[x][y][i] = 255
+        #         elif self.direction == constants.DIRECTION_HORIZONTAL:
+        #             for y in range(0, len(pixels[0]), stripe_dist):
+        #                 for x in range(len(pixels)):
+        #                     for i in range(3):
+        #                         pixels[x][y][i] = 255
 
         offset = ((self.x + self.min_x) * cell_size, (self.y + self.min_y) * cell_size)
         return ((layers[0], offset), (layers[1], offset))

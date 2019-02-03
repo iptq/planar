@@ -38,7 +38,7 @@ class Player(level.Block):
     def try_move(self, direction):
         res = self.block_can_move(direction, by_player=True, ignore=self)
         if res is None:
-            return
+            return None
 
         moves = [] #used for undo feature
 
@@ -47,9 +47,9 @@ class Player(level.Block):
             moves.append( (block, d) )
 
         # moves.append( (self, direction) )
-        self.level.move_stack.append(moves)
         # self.level.move_block(self, direction)
         # self.force_move(direction)
+        self.level.move_stack.append(moves)
 
         movements = {
             constants.DIRECTION_VERTICAL: set([constants.UP, constants.DOWN]),
@@ -58,7 +58,10 @@ class Player(level.Block):
         for block, d in moves:
             if block.direction in movements and d not in movements[block.direction]:
                 self.level.undo()
-                break
+                return None
         else:
             if not self.level.validate():
                 self.level.undo()
+                return None
+        self.level.undo()
+        return moves
