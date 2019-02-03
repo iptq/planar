@@ -27,6 +27,63 @@ class Segment(object):
     def position(self):
         return (self.block.x + self.rx, self.block.y + self.ry)
 
+    def __str__(self):
+        x, y = self.position
+        return "Segment[{}] ({}, {}, {})".format(self.t, x, y, self.z)
+
+    def can_move(self, direction):
+        sx, sy = self.position
+
+        # get direction of target
+        dx, dy = direction
+        target = (sx + dx, sy + dy, self.z)
+
+        # is the target even in the map?
+        if target[0] < 0 or target[0] >= self.block.level.dim[0] or target[1] < 0 or target[1] >= self.block.level.dim[1]:
+            return None
+
+        # check if there's anything at target
+        occupants = self.block.level.cellmap.get(target)
+        if occupants is None:
+            # nothing there, we're good to go!
+            return []
+        elif len(occupants) == 1:
+            (occupant, i) = occupants[0]
+            if self == occupant:
+                return []
+            else:
+                print(str(self), str(occupant.segments[i]))
+                if self.t == 0:
+                    # if this is a rectangle, then we can just push normally
+                    res = occupant.can_move(direction)
+                    if res is None:
+                        return None
+                    else:
+                        res.append((occupant, direction))
+                        return res
+                else:
+                    # if this is a triangle, first we need to check if the current block has 2 occupants
+                    curr_occupants = self.block.level.cellmap.get((sx, sy, self.z))
+                    print("curr:", curr_occupants)
+        elif len(occupants) == 2:
+            ind = [constants.UP, constants.LEFT, constants.DOWN, constants.RIGHT].index(direction)
+            closer_shapes = [1, 2, 3, 4, 1][ind:ind+2]
+            closer = None
+            farther = None
+            for (occ, i) in occupants:
+                if occ.segments[i].t in closer_shapes:
+                    closer = (occ, i)
+                else:
+                    farther = (occ, i)
+            assert closer is not None and farther is not None
+
+            if closer == self.block:
+                return []
+
+            print("calling {}.can_move".format(closer[0]))
+            # res = closer[0].can_move(direction)
+            # print("result:", res)
+
     def render(self, cell_size, color, padding = 1):
         tile = pygame.Surface((cell_size, cell_size), pygame.SRCALPHA, 32)
         tile = tile.convert_alpha()
@@ -60,44 +117,26 @@ class Block(object):
         segment.block = self
         self.segments.append(segment)
 
+    def __str__(self):
+        return "Block [" + ", ".join(map(str, self.segments)) + "]"
+
     def can_move(self, direction):
         if self.direction == constants.DIRECTION_HORIZONTAL and (direction == constants.UP or direction == constants.DOWN):
             return None
         if self.direction == constants.DIRECTION_VERTICAL and (direction == constants.LEFT or direction == constants.RIGHT):
             return None
 
+        result = []
         for segment in self.segments:
-            sx, sy = segment.position
+            print("calling {}.can_move".format(segment))
+            x = segment.can_move(direction)
+            if x is None:
+                result = None
+                break
+            else:
+                result.extend(x)
 
-            # get direction of target
-            dx, dy = direction
-            target = (sx + dx, sy + dy, segment.z)
-
-            # is the target even in the map?
-            if target[0] < 0 or target[0] >= self.level.dim[0] or target[1] < 0 or target[1] >= self.level.dim[1]:
-                return None
-
-            # check if there's anything at target
-            occupants = self.level.cellmap.get(target)
-            if occupants is None:
-                # nothing there, we're good to go!
-                return []
-            elif len(occupants) == 2:
-                ind = [constants.UP, constants.LEFT, constants.DOWN, constants.RIGHT].index(direction)
-                closer_shapes = [1, 2, 3, 4, 1][ind:ind+2]
-                closer = None
-                farther = None
-                for (occ, i) in occupants:
-                    if occ.segments[i].t in closer_shapes:
-                        closer = (occ, i)
-                    else:
-                        farther = (occ, i)
-                assert closer is not None and farther is not None
-
-                res = closer[0].can_move(direction)
-                print(res)
-
-        return None
+        return result
 
 class Level(object):
     def __init__(self, dimensions, blocks, players):
@@ -105,6 +144,7 @@ class Level(object):
         self.dim = dimensions
         self.cellmap = {}
         for block in blocks:
+            block.level = self
             for i, cell in enumerate(block.segments):
                 coords = tuple(cell)
                 if coords in self.cellmap:
