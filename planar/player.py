@@ -1,15 +1,27 @@
 import pygame
 
-import planar.level
+import planar.level as level
 import planar.constants as constants
 
-class Player(planar.level.Block):
+class Player(level.Block):
     def __init__(self, x, y, z, color):
         self.x = x
         self.y = y
-        self.z = z
         self.color = color
         self.level = None
+        self.direction = constants.DIRECTION_BOTH
+
+        seg = level.Segment(0, 0, z, 0)
+        seg.block = self
+        self.segments = [seg]
+
+    @property
+    def z(self):
+        return self.segments[0].z
+
+    @z.setter
+    def z(self, value):
+        self.segments[0].z = value
 
     def render(self, cell_size):
         tile = pygame.Surface((cell_size, cell_size), pygame.SRCALPHA, 32)

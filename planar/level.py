@@ -1,6 +1,6 @@
 import pygame
 
-import planar.constants
+import planar.constants as constants
 
 class Segment(object):
     def __init__(self, x, y, z, t):
@@ -61,19 +61,41 @@ class Block(object):
         self.segments.append(segment)
 
     def can_move(self, direction):
-        # get direction of target
-        dx, dy = direction
-        target = (self.x + dx, self.y + dy, self.z)
-
-        # is the target even in the map?
-        if target[0] < 0 or target[0] >= self.level.dim[0] or target[1] < 0 or target[1] >= self.level.dim[1]:
+        if self.direction == constants.DIRECTION_HORIZONTAL and (direction == constants.UP or direction == constants.DOWN):
+            return None
+        if self.direction == constants.DIRECTION_VERTICAL and (direction == constants.LEFT or direction == constants.RIGHT):
             return None
 
-        # check if there's anything at target
-        occupants = self.level.cellmap.get(target)
-        if occupants is None:
-            # nothing there, we're good to go!
-            return []
+        for segment in self.segments:
+            sx, sy = segment.position
+
+            # get direction of target
+            dx, dy = direction
+            target = (sx + dx, sy + dy, segment.z)
+
+            # is the target even in the map?
+            if target[0] < 0 or target[0] >= self.level.dim[0] or target[1] < 0 or target[1] >= self.level.dim[1]:
+                return None
+
+            # check if there's anything at target
+            occupants = self.level.cellmap.get(target)
+            if occupants is None:
+                # nothing there, we're good to go!
+                return []
+            elif len(occupants) == 2:
+                ind = [constants.UP, constants.LEFT, constants.DOWN, constants.RIGHT].index(direction)
+                closer_shapes = [1, 2, 3, 4, 1][ind:ind+2]
+                closer = None
+                farther = None
+                for (occ, i) in occupants:
+                    if occ.segments[i].t in closer_shapes:
+                        closer = (occ, i)
+                    else:
+                        farther = (occ, i)
+                assert closer is not None and farther is not None
+
+                res = closer[0].can_move(direction)
+                print(res)
 
         return None
 
@@ -109,7 +131,7 @@ class Level(object):
 
     def render(self, cell_size, padding = 1):
         DEFAULT_TILE = pygame.Surface((cell_size, cell_size))
-        pygame.draw.rect(DEFAULT_TILE, planar.constants.DEFAULT_TILE_COLOR, [1, 1, cell_size - 1, cell_size - 1], 0)
+        pygame.draw.rect(DEFAULT_TILE, constants.DEFAULT_TILE_COLOR, [1, 1, cell_size - 1, cell_size - 1], 0)
         layers = (pygame.Surface(tuple(cell_size * i + 1 for i in self.dim)),
                 pygame.Surface(tuple(cell_size * i + 1 for i in self.dim)))
         for z in range(2):
