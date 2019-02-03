@@ -23,6 +23,9 @@ class Player(level.Block):
     def z(self, value):
         self.segments[0].z = value
 
+    def position(self):
+        return (self.x, self.y, self.z)
+
     def render(self, cell_size):
         tile = pygame.Surface((cell_size, cell_size), pygame.SRCALPHA, 32)
         tile = tile.convert_alpha()
