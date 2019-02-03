@@ -85,7 +85,7 @@ def test2():
 def test3():
     return Level((11,11),[
     Block([0,0],[
-        Segment(2,0,0,0),
+        #Segment(2,0,0,0),
         Segment(4,0,0,0),
         Segment(6,0,0,0),
         Segment(8,0,0,0),
@@ -120,7 +120,7 @@ def test3():
         Segment(6,10,0,0),
         Segment(8,10,0,0),
         Segment(10,10,0,0),
-        Segment(2,0,1,0),
+        #Segment(2,0,1,0),
         Segment(4,0,1,0),
         Segment(6,0,1,0),
         Segment(8,0,1,0),
@@ -179,15 +179,16 @@ def test3():
         Segment(-8,-6,1,0),
         Segment(-4,0,0,0),
         Segment(-4,0,1,0),
-        Segment(-6,0,0,0),
-        Segment(-6,0,1,0),
+
         Segment(-8,0,0,0),
         Segment(-8,0,1,0),
         Segment(-6,-2,0,0),
         Segment(-6,-2,1,0),
 
         Segment(-6,-6,0,0),
-        Segment(-6,-6,1,0)
+        Segment(-6,-6,1,0),
+        Segment(-7,-9,1,0),
+        Segment(-7,-9,0,0)
     ], True, constants.DIRECTION_HORIZONTAL, [255, 10, 100]),
     Block((9, 5), [
         Segment(0, 0, 0, 0),
@@ -209,7 +210,9 @@ def test3():
         Segment(-8,4,0,0),
         Segment(-8,4,1,0),
         Segment(-4,-2,0,0),
-        Segment(-4,-2,1,0)
+        Segment(-4,-2,1,0),
+        Segment(-6,4,0,0),
+        Segment(-6,4,1,0)
     ], True, constants.DIRECTION_VERTICAL, [25, 160, 10])
 ], [
     Player(9, 0, 0, [66, 134, 244]),
