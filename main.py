@@ -4,13 +4,12 @@ from pygame.locals import *
 import pygame
 import sys
 
-SCREEN_WIDTH = 1366
-SCREEN_HEIGHT = 768
+from game import Game
 
 if __name__ == "__main__":
     pygame.init()
-    clock = pygame.time.Clock()
-    screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), 0, 32)
+    game = Game()
+    game.run()
 
     while True:
         for event in pygame.event.get():

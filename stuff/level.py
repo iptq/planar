@@ -1,6 +1,3 @@
-DIRECTION_HORIZONTAL = 0
-DIRECTION_VERTICAL = 1
-
 class Cell(object):
     def __init__(self, x, y, z, t):
         self.x = x
