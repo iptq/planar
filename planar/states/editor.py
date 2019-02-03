@@ -44,8 +44,12 @@ class EditorState(states.State):
                         Button(10, constants.SCREEN_HEIGHT *.75+40, 200, 30, "Change Moveable", self.change_moveable),
                         Button(220, constants.SCREEN_HEIGHT *.75, 200, 30, "Add Player", self.add_player),
                         Button(220, constants.SCREEN_HEIGHT *.75+40, 200, 30, "Add Goal", self.add_goal)]
-        self.active_block = level.blocks[0]
+        self.active_block = None
         self.active_segment = seg
+
+        self.ghost_loc = None
+        self.ghost_t = 0
+        self.states = ["normal"]
 
     def to_grid_location(self, pos):
         x = int((pos[0]-2*self.scale)//self.scale)
@@ -67,6 +71,7 @@ class EditorState(states.State):
         self.level.goals.append((x,y,self.active_segment.z))
 
     def change_type(self, type):
+        self.ghost_t = type
         self.active_segment.t = type
         self.texts[2].set_text(type)
 
@@ -118,15 +123,14 @@ class EditorState(states.State):
             block.segments = result
 
     def update(self, events):
+        self.ghost_loc = self.to_grid_location(pygame.mouse.get_pos())
         for event in events:
             for input in self.cinputs:
                 input.handle_event(event)
             for button in self.buttons:
                 button.handle_event(event)
             self.filename.handle_event(event)
-            if event.type == pygame.MOUSEMOTION:
-                pos = self.to_grid_location(pygame.mouse.get_pos())
-                print(pos)
+            # if event.type == pygame.MOUSEMOTION:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = self.to_grid_location(pygame.mouse.get_pos())
                 if pos != None:
@@ -156,6 +160,17 @@ class EditorState(states.State):
         screen.fill(Color(100, 80, 100))
 
         left, right = self.level.render(self.scale)
+
+        # draw the hover segment
+        if self.ghost_loc:
+            x, y, z = self.ghost_loc
+            seg = Segment(x, y, z, self.ghost_t)
+            surf = seg.render(self.scale, [100, 200, 250])
+            surf.fill((255, 255, 255, 128), None, pygame.BLEND_RGBA_MULT)
+            if z == 0:
+                left.blit(surf, (self.scale * x + 1, self.scale * y + 1))
+            else:
+                right.blit(surf, (self.scale * x + 1, self.scale * y + 1))
 
         if self.active_segment:
             surf = self.active_segment.render(self.scale, [0,0,0])
