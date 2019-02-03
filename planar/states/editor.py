@@ -18,6 +18,7 @@ class EditorState(states.State):
             Block((0,0),[seg,seg2], True, constants.DIRECTION_HORIZONTAL, [1,1,1])
         ], [], [])
         seg.block = level.blocks[0]
+        self.ghost = seg.block
         self.level = level
         self.scale = scale = (constants.SCREEN_WIDTH*.66) // (2 * self.level.dim[0] + 6)
         self.yoff = constants.SCREEN_HEIGHT / 2 - (self.level.dim[1] + 4) * self.scale / 2
@@ -35,8 +36,8 @@ class EditorState(states.State):
                         Button(110, yinput-30, 50, 30, "2", self.change_type, val=2),
                         Button(160, yinput-30, 50, 30, "3", self.change_type, val=3),
                         Button(210, yinput-30, 50, 30, "4", self.change_type, val=4),
-                        Button(10, 350, 200, 30, "Change Direction", self.change_direction),
-                        Button(10, 390, 200, 30, "Change Moveable", self.change_moveable)]
+                        Button(10, constants.SCREEN_HEIGHT *.75, 200, 30, "Change Direction", self.change_direction),
+                        Button(10, constants.SCREEN_HEIGHT *.75+40, 200, 30, "Change Moveable", self.change_moveable)]
         self.active_block = level.blocks[0]
         self.active_segment = seg
 
@@ -115,12 +116,13 @@ class EditorState(states.State):
                     self.active_segment.rx = x
                     self.active_segment.ry = y
                     self.active_segment.z = z
-                for block in self.level.blocks:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_j:
                     self.add_segment()
                 if event.key == pygame.K_d:
                     self.delete_segment()
+                if event.key == pygame.K_s:
+                    self.save()
 
         for input in self.cinputs:
             input.update()
@@ -151,3 +153,6 @@ class EditorState(states.State):
             text.draw(screen)
         for button in self.buttons:
             button.draw(screen)
+
+    def save(self):
+        pass
