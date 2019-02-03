@@ -13,7 +13,7 @@ from planar.states.editor import EditorState
 if __name__ == "__main__":
     pygame.init()
 
-    menu_state = MenuState()
+    menu_state = EditorState((10,10))
     game = Game()
     game.push_state(menu_state)
 

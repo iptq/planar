@@ -1,4 +1,5 @@
 import pygame
+import json
 
 COLOR_INACTIVE = pygame.Color('lightskyblue3')
 COLOR_ACTIVE = pygame.Color('dodgerblue2')
@@ -77,8 +78,6 @@ class TextInputBox:
                     self.active = False
                 elif event.key == pygame.K_BACKSPACE:
                     self.text = self.text[:-1]
-                    if len(self.text) > 0:
-                        self.num = int(self.text)
                 else:
                     text = event.unicode
                     self.text += text

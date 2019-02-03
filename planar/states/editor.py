@@ -1,12 +1,14 @@
 import pygame
 import copy
 from pygame import Color
+import json
 
 import planar.constants as constants
 import planar.states as states
+import planar.serial
 from planar.states.end import EndState
 from planar.level import Level, Block, Segment
-from planar.numinput import InputBox
+from planar.numinput import InputBox, TextInputBox
 from planar.textbox import TextBox
 from planar.button import Button
 from planar.player import Player
@@ -25,7 +27,7 @@ class EditorState(states.State):
         self.yoff = constants.SCREEN_HEIGHT / 2 - (self.level.dim[1] + 4) * self.scale / 2
         xinput = constants.SCREEN_WIDTH*.66
         yinput = self.yoff
-        self.filename = TextInputBox(SCREEN_WIDTH//2, 0, 100, 30)
+        self.filename = TextInputBox(constants.SCREEN_WIDTH*2//5, 20, 100, 30, text="Filename.txt")
         self.cinputs = [InputBox(xinput, yinput-70, 140, 30), InputBox(xinput, yinput-30, 140, 30), \
                         InputBox(xinput, yinput+10, 140, 30)]
         self.texts = [TextBox(xinput, yinput - 100, 120, 20, "New Color"),
@@ -121,6 +123,7 @@ class EditorState(states.State):
                 input.handle_event(event)
             for button in self.buttons:
                 button.handle_event(event)
+            self.filename.handle_event(event)
             if event.type == pygame.MOUSEBUTTONDOWN:
                 pos = self.to_grid_location(pygame.mouse.get_pos())
                 if pos != None:
@@ -169,8 +172,8 @@ class EditorState(states.State):
         self.filename.draw(screen)
 
     def save(self):
-        data = json.dumps(level, cls=planar.serial.GameEncoder, indent=2)
-        with open("level.txt", "w") as fout:
+        data = json.dumps(self.level, cls=planar.serial.GameEncoder, indent=2)
+        with open(self.filename.text, "w") as fout:
             fout.write(data)
 
 def load(self, string):
