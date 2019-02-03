@@ -2,12 +2,13 @@ import sys
 
 import pygame
 
-import constants
+import planar.constants
+from planar.states.menu import MenuState
 
 class Game(object):
     def __init__(self, start):
         size = (constants.SCREEN_WIDTH, constants.SCREEN_HEIGHT)
-        constants.GAME_FONT = pygame.freetype.Font("font/ZCOOLKuaiLe-Regular.ttf")
+        constants.GAME_FONT = pygame.freetype.Font("planar/font/ZCOOLKuaiLe-Regular.ttf")
 
         self.running = True
         self.clock = pygame.time.Clock()
@@ -30,10 +31,3 @@ class Game(object):
 
         pygame.quit()
         sys.exit()
-
-class State(object):
-    def __init__(self, transparent=False):
-        self.transparent = transparent
-
-    def draw(self):
-        raise NotImplementedException(f"draw() not implemented for {self.__class__}")
