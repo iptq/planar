@@ -1,7 +1,17 @@
+DIRECTION_HORIZONTAL = 0
+DIRECTION_VERTICAL = 1
+
 class Cell(object):
 	def __init__(self, x, y, t):
 		self.x = x
 		self.y = y
+
+		# t is the type of the block
+		# 0 = Full block
+		#  /\
+		# /21\
+		# \34/
+		#  \/
 		self.t = t
 
 class Block(object):
