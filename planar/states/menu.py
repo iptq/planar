@@ -4,7 +4,8 @@ from pygame import Color
 import planar.states as states
 import planar.constants as constants
 import planar.states.levels
-import planar.states.game
+import planar.states.editor as editor
+import planar.states.game as game
 
 from math import sin
 import time
@@ -22,6 +23,8 @@ class MenuState(states.State):
                 elif event.key == pygame.K_SPACE:
                     self.game.cur_level %= len(self.game.levels)
                     self.game.push_state(planar.states.game.GameState(self.game.levels[self.game.cur_level]()))
+                elif event.key == pygame.K_e:
+                    self.game.push_state(editor.EditorState((5, 5)))
 
     def draw(self, screen):
         # draw background
@@ -36,3 +39,6 @@ class MenuState(states.State):
 
         text_surface, rect = constants.MED_FONT.render("press space to begin", WHITE)
         screen.blit(text_surface, (constants.SCREEN_WIDTH / 2 - rect.width / 2, 300))
+
+        text_surface, rect = constants.MED_FONT.render("press e to editor", WHITE)
+        screen.blit(text_surface, (constants.SCREEN_WIDTH / 2 - rect.width / 2, 400))
