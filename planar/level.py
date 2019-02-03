@@ -49,6 +49,10 @@ class Segment(object):
         if target[0] < 0 or target[0] >= self.block.level.dim[0] or target[1] < 0 or target[1] >= self.block.level.dim[1]:
             return None
 
+        # if this block is immovable, return no
+        if not self.block.movable:
+            return None
+
         # first check if this is a triangle and if there's another triangle in this cell
         curr_occupants = self.block.level.cellmap.get(curr)
         if self.t != 0 and len(curr_occupants) == 2:

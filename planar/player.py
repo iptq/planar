@@ -9,6 +9,8 @@ class Player(level.Block):
         self.y = y
         self.color = color
         self.level = None
+
+        self.movable = True
         self.direction = constants.DIRECTION_BOTH
 
         seg = level.Segment(0, 0, z, 0)
