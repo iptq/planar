@@ -339,7 +339,7 @@ def testTut2():
         Segment(1, 0, 0, 0),
         Segment(0, 0, 1, 3),
         Segment(1, 0, 1, 0)
-    ], True, constants.DIRECTION_HORIZONTAL, [255, 10, 100])
+    ], True, constants.DIRECTION_HORIZONTAL, [10, 255, 100])
 ], [
     Player(1, 7, 0, [66, 134, 244]),
     Player(1, 7, 1, [244, 83, 65])
