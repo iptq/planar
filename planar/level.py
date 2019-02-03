@@ -295,7 +295,7 @@ class Level(object):
     def complete(self):
         for goal in self.goals:
             for player in self.players:
-                if player.position() == goal:
+                if all(i == j for i,j in zip(player.position(), goal)):
                     break
             else:
                 return False
