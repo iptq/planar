@@ -2,6 +2,7 @@ import sys
 
 import planar.level as level
 import planar.constants as constants
+import planar.player as player
 
 import pygame
 from pygame.locals import *
@@ -15,17 +16,29 @@ background = background.convert()
 background.fill((250, 250, 250))
 
 lvl = level.Level((10, 10), [
-    level.Block([
-        level.Segment(0, 0, 0, 1),
-        level.Segment(0, 1, 0, 0)
-    ], True, constants, [255, 10, 100]),
-    level.Block([
-        level.Segment(8, 0, 1, 0)
-    ], False, 0, [0, 255, 100])
+    level.Block([0, 0], [
+        level.Segment(0, 0, 0, 1)
+    ], True, constants, [255, 10, 100])
+
 ], [
-    level.Player(5, 5, 0, [66, 134, 244]),
-    level.Player(5, 5, 1, [244, 83, 65])
+    player.Player(5, 5, 0, [66, 134, 244]),
+    player.Player(5, 5, 1, [244, 83, 65])
 ])
+
+##lvl2 = level.Level((10, 10), [
+##    level.Block([
+##        level.Segment(0, 0, 0, 1),
+##        level.Segment(0, 1, 0, 0)
+##    ], True, constants, [255, 10, 100]),
+##    level.Block([
+##        level.Segment(8, 0, 1, 0)
+##    ], False, 0, [0, 255, 100])
+##], [
+##    player.Player(5, 5, 0, [66, 134, 244]),
+##    player.Player(5, 5, 1, [244, 83, 65])
+##])
+
+lvl.move_block(lvl.blocks[0], constants.DOWN)
 
 while 1:
     for event in pygame.event.get():

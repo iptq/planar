@@ -45,17 +45,15 @@ class Segment(object):
         return tile
 
 class Block(object):
-    def __init__(self, pos, movable, direction, color):
+    def __init__(self, pos, segments, movable, direction, color):
         self.x = pos[0]
         self.y = pos[1]
-        self.segments = []
+        self.segments = segments
+        for segment in self.segments:
+            segment.block = self
         self.movable = movable
         self.direction = direction
         self.color = color
-
-    def add_segment(self, segment):
-        segment.block = self
-        self.segments.append(segment)
 
     def can_move(self, direction):
         # get direction of target
@@ -75,7 +73,7 @@ class Block(object):
         return None
 
 class Level(object):
-    def __init__(self, dimensions, blocks):
+    def __init__(self, dimensions, blocks, players):
         # (x, y)
         self.dim = dimensions
         self.cellmap = {}
@@ -89,11 +87,9 @@ class Level(object):
                     self.cellmap[coords] = [(block, i)]
 
         self.blocks = blocks
-        self.players = []
-
-    def add_player(self, player):
-        player.level = self
-        self.players.append(player)
+        self.players = players
+        for player in self.players:
+            player.level = self
 
     def render(self, cell_size, padding = 1):
         DEFAULT_TILE = pygame.Surface((cell_size, cell_size))
@@ -115,3 +111,20 @@ class Level(object):
             layers[player.z].blit(player.render(cell_size), (cell_size * player.x, cell_size * player.y))
 
         return layers
+
+    def move_block(self, block, direction):
+        for i, segment in enumerate(block.segments):
+            location = tuple(segment)
+            new_location = (location[0] + direction[0], location[1] + direction[1], location[2])
+            if location not in self.cellmap:
+                raise Exception('Moving segment that doesn\'t exist?!')
+            print(self.cellmap[location])
+            self.cellmap[location].remove((block, i))
+            if len(self.cellmap[location]) == 0:
+                del self.cellmap[location]
+            if new_location not in self.cellmap:
+                self.cellmap[new_location] = [(block, i)]
+            else:
+                self.cellmap[new_location].append((block, i))
+        block.x += direction[0]
+        block.y += direction[1]
