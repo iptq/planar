@@ -148,10 +148,11 @@ class Segment(object):
         b = cell_size - a - 1
         if self.t == 0:
             pygame.draw.rect(tile, color, [a, a, b - a + 1, b - a + 1], 0)
-            if self.block.direction == constants.DIRECTION_HORIZONTAL:
-                pygame.draw.line(tile, [255, 255, 255], (a, (a + b) / 2), (b, (a + b) / 2))
-            elif self.block.direction == constants.DIRECTION_VERTICAL:
-                pygame.draw.line(tile, [255, 255, 255], ((a + b) / 2, a), ((a + b) / 2, b))
+            if self.block.movable:
+                if self.block.direction == constants.DIRECTION_HORIZONTAL:
+                    pygame.draw.line(tile, [255, 255, 255], (a, (a + b) / 2), (b, (a + b) / 2))
+                elif self.block.direction == constants.DIRECTION_VERTICAL:
+                    pygame.draw.line(tile, [255, 255, 255], ((a + b) / 2, a), ((a + b) / 2, b))
         elif self.t == 1:
             pygame.draw.polygon(tile, color, [[a, a], [a, b], [b, b]], 0)
         elif self.t == 2:
@@ -160,14 +161,15 @@ class Segment(object):
             pygame.draw.polygon(tile, color, [[a, a], [b, a], [b, b]], 0)
         elif self.t == 4:
             pygame.draw.polygon(tile, color, [[a, a], [b, a], [a, b]], 0)
-        if (self.t == 2 or self.t == 3) and self.block.direction == constants.DIRECTION_HORIZONTAL:
-            pygame.draw.line(tile, [255, 255, 255], ((a + b) / 2, (a + b) / 2), (b, (a + b) / 2))
-        if (self.t == 1 or self.t == 4) and self.block.direction == constants.DIRECTION_HORIZONTAL:
-            pygame.draw.line(tile, [255, 255, 255], (a, (a + b) / 2), ((a + b) / 2, (a + b) / 2))
-        if (self.t == 3 or self.t == 4) and self.block.direction == constants.DIRECTION_VERTICAL:
-            pygame.draw.line(tile, [255, 255, 255], ((a + b) / 2, a), ((a + b) / 2, (a + b) / 2))
-        if (self.t == 1 or self.t == 2) and self.block.direction == constants.DIRECTION_VERTICAL:
-            pygame.draw.line(tile, [255, 255, 255], ((a + b) / 2, (a + b) / 2), ((a + b) / 2, b))
+        if self.block.movable:
+            if (self.t == 2 or self.t == 3) and self.block.direction == constants.DIRECTION_HORIZONTAL:
+                pygame.draw.line(tile, [255, 255, 255], ((a + b) / 2, (a + b) / 2), (b, (a + b) / 2))
+            if (self.t == 1 or self.t == 4) and self.block.direction == constants.DIRECTION_HORIZONTAL:
+                pygame.draw.line(tile, [255, 255, 255], (a, (a + b) / 2), ((a + b) / 2, (a + b) / 2))
+            if (self.t == 3 or self.t == 4) and self.block.direction == constants.DIRECTION_VERTICAL:
+                pygame.draw.line(tile, [255, 255, 255], ((a + b) / 2, a), ((a + b) / 2, (a + b) / 2))
+            if (self.t == 1 or self.t == 2) and self.block.direction == constants.DIRECTION_VERTICAL:
+                pygame.draw.line(tile, [255, 255, 255], ((a + b) / 2, (a + b) / 2), ((a + b) / 2, b))
         return tile
 
 class Block(object):

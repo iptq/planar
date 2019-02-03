@@ -235,7 +235,7 @@ def test2():
         Segment(0,2,1,0),
         Segment(0,3,0,0),
         Segment(0,3,1,0)
-    ], False, 0 , [0,0,0]),
+    ], False, constants.DIRECTION_BOTH, [0,0,0]),
     Block([3,5],[
         Segment(0,0,0,4),
         Segment(0,0,1,4),
@@ -253,7 +253,7 @@ def test2():
         Segment(0,2,1,0),
         Segment(0,3,0,0),
         Segment(0,3,1,0)
-    ], False, 0 , [0,0,0]),
+    ], False, constants.DIRECTION_BOTH, [0,0,0]),
     Block([3,5],[
         Segment(0,0,0,2),
         Segment(0,1,0,0),
