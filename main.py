@@ -11,7 +11,7 @@ from planar.tests import *
 if __name__ == "__main__":
     pygame.init()
 
-    menu_state = GameState(test2())
+    menu_state = GameState(test3())
     game = Game()
     game.push_state(menu_state)
 
