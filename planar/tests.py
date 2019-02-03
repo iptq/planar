@@ -3,18 +3,54 @@ from planar.player import Player
 from planar.level import Level, Block, Segment
 
 def testshit():
-    block = Block((3, 3), [
+    block = Block((4, 4), [
         Segment(0, 0, 0, 1),
         Segment(0, 1, 0, 0),
+        Segment(0, 2, 0, 3)
     ], True, constants.DIRECTION_VERTICAL, [255, 10, 100])
-    block2 = Block((3, 3), [
+    block2 = Block((4, 4), [
         Segment(0, 0, 0, 3),
         Segment(1, 0, 0, 0),
         Segment(1, 0, 1, 0),
+        Segment(0, -1, 0, 2),
+        Segment(1, -1, 0, 0)
     ], True, constants.DIRECTION_HORIZONTAL, [10, 255, 100])
-    return Level((8, 8), [block, block2], [
-        Player(5, 5, 0, [66, 134, 244]),
-        Player(5, 5, 1, [244, 83, 65]),
+    block3 = Block((4, 2), [
+        Segment(0, 0, 0, 2),
+        Segment(0, 1, 0, 4)
+    ], True, constants.DIRECTION_VERTICAL, [25, 160, 10])
+    block4 = Block((2, 2), [
+        Segment(0, 0, 0, 3),
+        Segment(1, 0, 0, 0),
+        Segment(2, 0, 0, 4)
+    ], True, constants.DIRECTION_HORIZONTAL, [200, 100, 10])
+    block5 = Block((2, 2), [
+        Segment(0, 0, 0, 1),
+        Segment(0, 1, 0, 0)
+    ], True, constants.DIRECTION_VERTICAL, [10, 10, 200])
+    block6 = Block((2, 6), [
+        Segment(0, 0, 0, 2),
+        Segment(1, 0, 0, 0),
+        Segment(2, 0, 0, 1)
+    ], True, constants.DIRECTION_HORIZONTAL, [100, 200, 200])
+    block7 = Block((2, 5), [
+        #Segment(0, 0, 0, 0),
+        Segment(0, 1, 0, 4)
+    ], True, constants.DIRECTION_VERTICAL, [200, 200, 10])
+    immovable = Block((0, 0), [
+        Segment(0, 7, 0, 0),
+        Segment(1, 7, 0, 0),
+        Segment(2, 7, 0, 0),
+        Segment(5, 2, 0, 0),
+        Segment(6, 2, 0, 0),
+        Segment(7, 2, 0, 0)
+    ], True, constants.DIRECTION_BOTH, [0, 0, 0])
+    return Level((8, 8), [block, block2, block3, block4, block5, block6, block7, immovable], [
+        Player(6, 6, 0, [66, 134, 244]),
+        Player(6, 6, 1, [244, 83, 65])
+    ], [
+        (0, 0, 0),
+        (0, 0, 1)
     ])
 
 def test1():
