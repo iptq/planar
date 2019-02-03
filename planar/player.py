@@ -36,17 +36,20 @@ class Player(level.Block):
         return tile
 
     def try_move(self, direction):
-        res = self.block_can_move(direction, by_player=True)
+        res = self.block_can_move(direction, by_player=True, ignore=self)
         if res is None:
             return
 
         moves = [] #used for undo feature
 
-        for block, dir in res.items():
-            self.level.move_block(block, dir)
-            moves.append( (block, dir) )
+        for block, d in res.items():
+            self.level.move_block(block, d)
+            moves.append( (block, d) )
 
         # moves.append( (self, direction) )
         self.level.move_stack.append(moves)
         # self.level.move_block(self, direction)
         # self.force_move(direction)
+
+        if not self.level.validate():
+            self.level.undo()

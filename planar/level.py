@@ -37,7 +37,7 @@ class Segment(object):
     def __repr__(self):
         return str(self)
 
-    def segment_can_move(self, direction, by_player=False, depth=0):
+    def segment_can_move(self, direction, by_player=False, depth=0, ignore=None):
         opposites = { 1: 3, 3: 1, 2: 4, 4: 2 }
 
         sx, sy = self.position
@@ -87,7 +87,7 @@ class Segment(object):
                 assert len(intersection) == 1
                 new_direction = list(intersection)[0]
 
-                res = other[0].block_can_move(new_direction, depth=depth+1)
+                res = other[0].block_can_move(new_direction, depth=depth+1, ignore=ignore)
                 if res is None:
                     return None
                 else:
@@ -101,12 +101,14 @@ class Segment(object):
             return {}
         elif len(occupants) == 1:
             (occupant, i) = occupants[0]
+            if occupant == ignore:
+                return {}
             if self.block == occupant:
                 return {}
             else:
                 if self.t == 0:
                     # if this is a rectangle, then we can just push normally
-                    res = occupant.block_can_move(direction, depth=depth+1)
+                    res = occupant.block_can_move(direction, depth=depth+1, ignore=ignore)
                     if res is None:
                         return None
                     else:
@@ -192,7 +194,7 @@ class Block(object):
     def __repr__(self):
         return str(self)
 
-    def block_can_move(self, direction, by_player=False, depth=0):
+    def block_can_move(self, direction, by_player=False, depth=0, ignore=None):
         if self.direction == constants.DIRECTION_HORIZONTAL and (direction == constants.UP or direction == constants.DOWN):
             return None
         if self.direction == constants.DIRECTION_VERTICAL and (direction == constants.LEFT or direction == constants.RIGHT):
@@ -201,7 +203,7 @@ class Block(object):
         result = {}
         failed = False
         for segment in self.segments:
-            res = segment.segment_can_move(direction, by_player=by_player, depth=depth+1)
+            res = segment.segment_can_move(direction, by_player=by_player, depth=depth+1, ignore=ignore)
             if res is None:
                 failed = True
             else:
@@ -342,3 +344,29 @@ class Level(object):
                 #object is a player
                 # object.force_move(direction)
                 self.move_block(object, direction)
+
+    def validate(self):
+        for x, y, z in self.cellmap:
+            l = self.cellmap[(x, y, z)]
+            if len(l) == 0:
+                raise Exception('empty cellmap entry exists!?')
+            elif len(l) == 1:
+                continue
+            elif len(l) == 2:
+                (b1, i1), (b2, i2) = l
+                s1 = b1.segments[i1]
+                s2 = b2.segments[i2]
+
+                import planar.player as player
+                if isinstance(s1, player.Player) or isinstance(s2, player.Player):
+                    print('player exists with other segment', s1, s2)
+                    return False
+                if s1.t == 0 or s2.t == 0:
+                    print('full segment exists with other segment', s1, s2)
+                    return False
+                if abs(s1.t - s2.t) != 2:
+                    print('conflicting segments exist', s1.t, s2.t)
+                    return False
+                continue
+            return False
+        return True
