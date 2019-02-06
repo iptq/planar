@@ -179,10 +179,16 @@ class Block(object):
         self.segments = segments
         for segment in self.segments:
             segment.block = self
-        self.min_x = min(s.rx for s in segments)
-        self.max_x = max(s.rx for s in segments)
-        self.min_y = min(s.ry for s in segments)
-        self.max_y = max(s.ry for s in segments)
+        if len(segments) > 0:
+            self.min_x = min(s.rx for s in segments)
+            self.max_x = max(s.rx for s in segments)
+            self.min_y = min(s.ry for s in segments)
+            self.max_y = max(s.ry for s in segments)
+        else:
+            self.min_x = 0
+            self.max_x = 0
+            self.min_y = 0
+            self.max_y = 0
         self.movable = movable
         self.direction = direction
         self.color = color
