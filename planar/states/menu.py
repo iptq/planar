@@ -25,6 +25,8 @@ class MenuState(states.State):
                     self.game.push_state(planar.states.game.GameState(self.game.levels[self.game.cur_level]()))
                 elif event.key == pygame.K_e:
                     self.game.push_state(editor.EditorState())
+                elif event.key == pygame.K_l:
+                    self.game.push_state(planar.states.game.GameState(editor.load("Filename.txt")))
 
     def draw(self, screen):
         # draw background

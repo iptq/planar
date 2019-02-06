@@ -352,4 +352,7 @@ def testTut2():
 def pyramid():
     return load("pyramid.txt")
 
-levels = [testTut, testTut2, test1, test2, test3, pyramid]
+def oop():
+    return load("oop.txt")
+
+levels = [testTut, testTut2, test1, test2, test3, pyramid, oop]

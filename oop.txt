@@ -1,0 +1,736 @@
+{
+  "type": "level",
+  "w": 9,
+  "h": 9,
+  "blocks": [
+    {
+      "type": "block",
+      "x": 8,
+      "y": 1,
+      "segments": [
+        {
+          "type": "segment",
+          "rx": -2,
+          "ry": 3,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -5,
+          "ry": 6,
+          "z": 0,
+          "t": 4
+        },
+        {
+          "type": "segment",
+          "rx": -7,
+          "ry": 7,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -1,
+          "ry": 3,
+          "z": 0,
+          "t": 0
+        }
+      ],
+      "movable": true,
+      "direction": 0,
+      "color": [
+        200,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "block",
+      "x": 8,
+      "y": 2,
+      "segments": [
+        {
+          "type": "segment",
+          "rx": -4,
+          "ry": 1,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -1,
+          "ry": -1,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -5,
+          "ry": 1,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -4,
+          "ry": 0,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -1,
+          "ry": 2,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -6,
+          "ry": 6,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -2,
+          "ry": 2,
+          "z": 1,
+          "t": 0
+        }
+      ],
+      "movable": true,
+      "direction": 1,
+      "color": [
+        0,
+        200,
+        0
+      ]
+    },
+    {
+      "type": "block",
+      "x": 6,
+      "y": 0,
+      "segments": [
+        {
+          "type": "segment",
+          "rx": -2,
+          "ry": 5,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": 1,
+          "ry": 7,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -1,
+          "ry": 5,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -3,
+          "ry": 5,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -2,
+          "ry": 6,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": 1,
+          "ry": 6,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": 1,
+          "ry": 2,
+          "z": 1,
+          "t": 0
+        }
+      ],
+      "movable": true,
+      "direction": 1,
+      "color": [
+        0,
+        0,
+        200
+      ]
+    },
+    {
+      "type": "block",
+      "x": 8,
+      "y": 3,
+      "segments": [
+        {
+          "type": "segment",
+          "rx": -7,
+          "ry": -2,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -6,
+          "ry": 1,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -7,
+          "ry": 1,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -3,
+          "ry": -2,
+          "z": 0,
+          "t": 2
+        },
+        {
+          "type": "segment",
+          "rx": -7,
+          "ry": 4,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -7,
+          "ry": 2,
+          "z": 0,
+          "t": 4
+        },
+        {
+          "type": "segment",
+          "rx": -1,
+          "ry": 5,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -1,
+          "ry": -3,
+          "z": 1,
+          "t": 0
+        }
+      ],
+      "movable": true,
+      "direction": 0,
+      "color": [
+        0,
+        150,
+        150
+      ]
+    },
+    {
+      "type": "block",
+      "x": 8,
+      "y": 2,
+      "segments": [
+        {
+          "type": "segment",
+          "rx": -5,
+          "ry": 5,
+          "z": 0,
+          "t": 2
+        },
+        {
+          "type": "segment",
+          "rx": -2,
+          "ry": 5,
+          "z": 1,
+          "t": 0
+        }
+      ],
+      "movable": true,
+      "direction": 1,
+      "color": [
+        150,
+        0,
+        150
+      ]
+    },
+    {
+      "type": "block",
+      "x": 7,
+      "y": 4,
+      "segments": [
+        {
+          "type": "segment",
+          "rx": -2,
+          "ry": -3,
+          "z": 0,
+          "t": 4
+        }
+      ],
+      "movable": true,
+      "direction": 1,
+      "color": [
+        150,
+        150,
+        0
+      ]
+    },
+    {
+      "type": "block",
+      "x": 8,
+      "y": 2,
+      "segments": [
+        {
+          "type": "segment",
+          "rx": -8,
+          "ry": 1,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -8,
+          "ry": 0,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -8,
+          "ry": 4,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -8,
+          "ry": 3,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -8,
+          "ry": -1,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -8,
+          "ry": 5,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -7,
+          "ry": 1,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -7,
+          "ry": 0,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -7,
+          "ry": 4,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -2,
+          "ry": 3,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -1,
+          "ry": 3,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -5,
+          "ry": -1,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -3,
+          "ry": 1,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -2,
+          "ry": -1,
+          "z": 0,
+          "t": 0
+        }
+      ],
+      "movable": false,
+      "direction": 0,
+      "color": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "type": "block",
+      "x": 8,
+      "y": 5,
+      "segments": [
+        {
+          "type": "segment",
+          "rx": -7,
+          "ry": -1,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -7,
+          "ry": -4,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -7,
+          "ry": 2,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -6,
+          "ry": -3,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -6,
+          "ry": -4,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -7,
+          "ry": -3,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -7,
+          "ry": 1,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -6,
+          "ry": 0,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -6,
+          "ry": 1,
+          "z": 0,
+          "t": 4
+        },
+        {
+          "type": "segment",
+          "rx": -6,
+          "ry": -2,
+          "z": 0,
+          "t": 0
+        }
+      ],
+      "movable": true,
+      "direction": 1,
+      "color": [
+        200,
+        200,
+        20
+      ]
+    },
+    {
+      "type": "block",
+      "x": 8,
+      "y": 1,
+      "segments": [
+        {
+          "type": "segment",
+          "rx": -4,
+          "ry": 6,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -4,
+          "ry": 5,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -4,
+          "ry": 3,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -4,
+          "ry": 1,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -4,
+          "ry": 0,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -3,
+          "ry": 6,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -2,
+          "ry": 5,
+          "z": 1,
+          "t": 0
+        }
+      ],
+      "movable": true,
+      "direction": 1,
+      "color": [
+        100,
+        100,
+        100
+      ]
+    },
+    {
+      "type": "block",
+      "x": 8,
+      "y": 3,
+      "segments": [
+        {
+          "type": "segment",
+          "rx": -6,
+          "ry": 1,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -6,
+          "ry": -1,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -6,
+          "ry": -2,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -6,
+          "ry": 4,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -6,
+          "ry": 3,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -2,
+          "ry": 4,
+          "z": 0,
+          "t": 0
+        }
+      ],
+      "movable": true,
+      "direction": 1,
+      "color": [
+        0,
+        125,
+        250
+      ]
+    },
+    {
+      "type": "block",
+      "x": 8,
+      "y": 3,
+      "segments": [
+        {
+          "type": "segment",
+          "rx": -5,
+          "ry": -1,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -5,
+          "ry": -2,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -5,
+          "ry": 1,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -5,
+          "ry": 3,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -5,
+          "ry": 4,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -1,
+          "ry": -1,
+          "z": 0,
+          "t": 1
+        }
+      ],
+      "movable": true,
+      "direction": 1,
+      "color": [
+        50,
+        100,
+        0
+      ]
+    },
+    {
+      "type": "block",
+      "x": 8,
+      "y": 3,
+      "segments": [
+        {
+          "type": "segment",
+          "rx": -7,
+          "ry": -3,
+          "z": 1,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": 0,
+          "ry": -1,
+          "z": 0,
+          "t": 0
+        },
+        {
+          "type": "segment",
+          "rx": -1,
+          "ry": -1,
+          "z": 0,
+          "t": 3
+        }
+      ],
+      "movable": true,
+      "direction": 0,
+      "color": [
+        100,
+        50,
+        0
+      ]
+    }
+  ],
+  "players": [
+    {
+      "type": "player",
+      "x": 4,
+      "y": 4,
+      "z": 0,
+      "color": [
+        20,
+        20,
+        20
+      ]
+    },
+    {
+      "type": "player",
+      "x": 8,
+      "y": 4,
+      "z": 1,
+      "color": [
+        20,
+        20,
+        20
+      ]
+    }
+  ],
+  "goals": [
+    [
+      0,
+      4,
+      1
+    ],
+    [
+      8,
+      5,
+      0
+    ]
+  ]
+}
