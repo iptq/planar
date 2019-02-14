@@ -10,7 +10,7 @@ fn load_level<'a>() -> Result<Level<'a>, Error> {
     file.read_to_string(&mut contents)?;
 
     let repr = serde_json::from_str(&contents)?;
-    let level = Level::new(repr)?;
+    let level = Level::from(repr)?;
     Ok(level)
 }
 
@@ -20,7 +20,7 @@ fn main() {
     let video_subsystem = sdl_context.video().unwrap();
 
     let window = video_subsystem
-        .window("planar", 800, 600)
+        .window("planar", 1366, 768)
         .resizable()
         .position_centered()
         .build()

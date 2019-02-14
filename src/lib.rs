@@ -20,7 +20,7 @@ pub use events::Events;
 pub use level::{Level, LevelRepr};
 pub use moves::Moves;
 pub use segment::{Segment, SegmentRepr};
-pub use shape::{Shape, Direction, SlidingDirection};
+pub use shape::{Direction, Shape, SlidingDirection};
 pub use state::State;
 
 pub struct Game {
