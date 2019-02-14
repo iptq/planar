@@ -1,4 +1,4 @@
-use planar::{Game, Events};
+use planar::{Events, Game};
 
 fn main() {
     let sdl_context = sdl2::init().unwrap();
@@ -15,7 +15,7 @@ fn main() {
     let events = Events::new(event_pump);
     let mut game = Game::new(canvas, events);
 
-    'running: loop {
+    while game.running() {
         game.iter();
     }
 }
