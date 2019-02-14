@@ -37,6 +37,7 @@ ref_thread_local! {
     };
 }
 
+#[cfg(target_arch = "wasm32")]
 extern "C" fn main_loop() {
     GAME.borrow_mut().iter();
 }
