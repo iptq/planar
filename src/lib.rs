@@ -5,14 +5,15 @@ mod block;
 mod events;
 mod level;
 mod moves;
-mod state;
 mod segment;
 mod shape;
+pub mod state;
 
-use std::time::Duration;
+use std::time::{Duration, Instant};
 
+use sdl2::event::Event;
+use sdl2::pixels::Color;
 use sdl2::render::WindowCanvas;
-use sdl2::{event::Event, keyboard::Keycode, pixels::Color};
 
 pub use block::Block;
 pub use events::Events;
@@ -20,9 +21,12 @@ pub use level::Level;
 pub use moves::Moves;
 pub use segment::Segment;
 pub use shape::{Shape, SlidingDirection};
+pub use state::State;
 
 pub struct Game {
+    last_update: Instant,
     running: bool,
+    state_stack: Vec<Box<State>>,
     events: Events,
     canvas: WindowCanvas,
 }
@@ -30,7 +34,9 @@ pub struct Game {
 impl Game {
     pub fn new(canvas: WindowCanvas, events: Events) -> Self {
         Game {
+            last_update: Instant::now(),
             running: true,
+            state_stack: Vec::new(),
             canvas,
             events,
         }
@@ -41,19 +47,42 @@ impl Game {
     }
 
     pub fn iter(&mut self) {
+        let now = Instant::now();
+        let delta = now - self.last_update;
+
         self.canvas.set_draw_color(Color::RGB(0, 100, 200));
         self.canvas.clear();
-        for event in self.events.poll_iter() {
+
+        // gather all the events
+        let events = self.events.poll_iter().collect::<Vec<_>>();
+        for event in events.iter() {
             match event {
-                Event::Quit { .. }
-                | Event::KeyDown {
-                    keycode: Some(Keycode::Escape),
-                    ..
-                } => self.running = false,
-                _ => {}
+                Event::Quit { .. } => self.running = false,
+                _ => (),
             }
         }
+        // for event in self.events.poll_iter() {
+        //     match event {
+        //         Event::Quit { .. }
+        //         | Event::KeyDown {
+        //             keycode: Some(Keycode::Escape),
+        //             ..
+        //         } => self.running = false,
+        //         _ => {}
+        //     }
+        // }
+
+        // update topmost state
+        if let Some(topmost) = self.state_stack.iter().last() {
+            topmost.update(delta);
+        }
+
         self.canvas.present();
+        self.last_update = now;
         ::std::thread::sleep(Duration::new(0, 1_000_000_000u32 / 60));
+    }
+
+    pub fn push_state(&mut self, state: impl State + 'static) {
+        self.state_stack.push(Box::new(state))
     }
 }
