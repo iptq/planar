@@ -21,6 +21,7 @@ fn main() {
 
     let window = video_subsystem
         .window("planar", 800, 600)
+        .resizable()
         .position_centered()
         .build()
         .unwrap();

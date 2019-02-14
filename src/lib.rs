@@ -50,31 +50,29 @@ impl Game {
         let now = Instant::now();
         let delta = now - self.last_update;
 
-        self.canvas.set_draw_color(Color::RGB(0, 100, 200));
+        self.canvas.set_draw_color(Color::RGB(17, 17, 17));
         self.canvas.clear();
 
         // gather all the events
         let events = self.events.poll_iter().collect::<Vec<_>>();
+
+        // catch quit event
         for event in events.iter() {
             match event {
                 Event::Quit { .. } => self.running = false,
                 _ => (),
             }
         }
-        // for event in self.events.poll_iter() {
-        //     match event {
-        //         Event::Quit { .. }
-        //         | Event::KeyDown {
-        //             keycode: Some(Keycode::Escape),
-        //             ..
-        //         } => self.running = false,
-        //         _ => {}
-        //     }
-        // }
 
         // update topmost state
         if let Some(topmost) = self.state_stack.iter().last() {
             topmost.update(delta);
+        }
+
+        // render states
+        // TODO: optimize by finding out the topmost nontransparent
+        for state in self.state_stack.iter() {
+            state.render(&mut self.canvas);
         }
 
         self.canvas.present();

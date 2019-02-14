@@ -33,6 +33,10 @@ impl<'a> Level<'a> {
         Ok(level)
     }
 
+    pub fn dimensions(&self) -> (u32, u32) {
+        self.dimensions
+    }
+
     pub fn render(&self, cell_size: u32) -> (Surface, Surface) {
         let left_surface = Surface::new(
             self.dimensions.0 * cell_size,
