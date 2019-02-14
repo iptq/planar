@@ -6,11 +6,13 @@ use failure::Error;
 use sdl2::pixels::{Color, PixelFormatEnum};
 use sdl2::surface::Surface;
 
-use crate::{Block, Moves, Segment, Shape, SlidingDirection};
+use crate::{Block, BlockRepr, Moves, Segment, Shape, SlidingDirection};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct LevelRepr {
+    pub version: u8,
     pub dimensions: (u32, u32),
+    pub blocks: Vec<BlockRepr>,
 }
 
 #[derive(DebugStub, Default)]

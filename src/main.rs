@@ -5,7 +5,7 @@ use failure::Error;
 use planar::{state::GameState, Events, Game, Level};
 
 fn load_level<'a>() -> Result<Level<'a>, Error> {
-    let mut file = File::open("levels/1.json")?;
+    let mut file = File::open("levels/tutorial.json")?;
     let mut contents = String::new();
     file.read_to_string(&mut contents)?;
 

@@ -15,12 +15,12 @@ use sdl2::event::Event;
 use sdl2::pixels::Color;
 use sdl2::render::WindowCanvas;
 
-pub use block::Block;
+pub use block::{Block, BlockRepr};
 pub use events::Events;
-pub use level::Level;
+pub use level::{Level, LevelRepr};
 pub use moves::Moves;
-pub use segment::Segment;
-pub use shape::{Shape, SlidingDirection};
+pub use segment::{Segment, SegmentRepr};
+pub use shape::{Shape, Direction, SlidingDirection};
 pub use state::State;
 
 pub struct Game {
@@ -66,7 +66,7 @@ impl Game {
 
         // update topmost state
         if let Some(topmost) = self.state_stack.iter().last() {
-            topmost.update(delta);
+            topmost.update(delta, events);
         }
 
         // render states

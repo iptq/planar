@@ -17,7 +17,6 @@ impl<'a> State for GameState<'a> {
     fn render(&self, canvas: &mut WindowCanvas) {
         let (rows, columns) = self.level.dimensions();
         let (screen_width, screen_height) = canvas.output_size().unwrap();
-        // println!("{:?}", (screen_width, screen_height));
 
         // determine cell size
         let level_ratio = (2.0 * columns as f64 + 6.0) / (rows as f64 + 4.0);
@@ -30,6 +29,7 @@ impl<'a> State for GameState<'a> {
             (scale, ((screen_width - (2 * columns + 6) * scale) / 2, 0))
         };
 
+        // render levels into textures
         let texture_creator = canvas.texture_creator();
         let (left, right) = self.level.render(scale);
         let (left, right) = (
@@ -37,6 +37,7 @@ impl<'a> State for GameState<'a> {
             texture_creator.create_texture_from_surface(right).unwrap(),
         );
 
+        // render it onto the canvas
         canvas
             .copy(
                 &left,

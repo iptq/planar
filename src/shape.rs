@@ -1,13 +1,19 @@
-#[derive(Debug, PartialEq, Eq, Hash)]
-pub enum Shape {}
+#[derive(Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
+pub enum Shape {
+    Rectangle,
+    TopLeft,
+    TopRight,
+    BottomLeft,
+    BottomRight,
+}
 
-#[derive(Debug, PartialEq, Eq, Hash)]
+#[derive(Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum SlidingDirection {
     Horizontal,
     Vertical,
 }
 
-#[derive(Debug, PartialEq, Eq, Hash)]
+#[derive(Debug, PartialEq, Eq, Hash, Serialize, Deserialize)]
 pub enum Direction {
     Up,
     Down,
