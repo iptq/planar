@@ -19,13 +19,13 @@ impl<'a> State for GameState<'a> {
         let (screen_width, screen_height) = canvas.output_size().unwrap();
 
         // determine cell size
-        let level_ratio = (2.0 * columns as f64 + 6.0) / (rows as f64 + 4.0);
+        let level_ratio = (2 * columns + 6) as f64 / (rows + 2) as f64;
         let screen_ratio = screen_width as f64 / screen_height as f64;
         let (scale, (xoff, yoff)) = if level_ratio > screen_ratio {
             let scale = screen_width / (2 * columns + 6);
-            (scale, (0, (screen_height - (rows + 4) * scale) / 2))
+            (scale, (0, (screen_height - (rows + 2) * scale) / 2))
         } else {
-            let scale = screen_height / (rows + 4);
+            let scale = screen_height / (rows + 2);
             (scale, ((screen_width - (2 * columns + 6) * scale) / 2, 0))
         };
 
@@ -44,7 +44,7 @@ impl<'a> State for GameState<'a> {
                 None,
                 Some(Rect::new(
                     (xoff + 2 * scale) as i32,
-                    (yoff + 2 * scale) as i32,
+                    (yoff + scale) as i32,
                     columns * scale,
                     rows * scale,
                 )),
@@ -56,7 +56,7 @@ impl<'a> State for GameState<'a> {
                 None,
                 Some(Rect::new(
                     (xoff + (4 + columns) * scale) as i32,
-                    (yoff + 2 * scale) as i32,
+                    (yoff + scale) as i32,
                     columns * scale,
                     rows * scale,
                 )),

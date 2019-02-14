@@ -1,6 +1,9 @@
 #[macro_use]
 extern crate serde_derive;
 
+#[cfg(target_arch = "wasm32")]
+pub mod emscripten;
+
 mod block;
 mod events;
 mod level;
@@ -11,6 +14,7 @@ pub mod state;
 
 use std::time::{Duration, Instant};
 
+use packer::Packer;
 use sdl2::event::Event;
 use sdl2::pixels::Color;
 use sdl2::render::WindowCanvas;
@@ -22,6 +26,10 @@ pub use moves::Moves;
 pub use segment::{Segment, SegmentRepr};
 pub use shape::{Direction, Shape, SlidingDirection};
 pub use state::State;
+
+#[derive(Packer)]
+#[folder = "levels"]
+pub struct Levels;
 
 pub struct Game {
     last_update: Instant,
