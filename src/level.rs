@@ -1,27 +1,51 @@
-use sdl2::pixels::PixelFormatEnum;
+use std::collections::HashMap;
+use std::sync::Arc;
+
+use debug_stub_derive::DebugStub;
+use failure::Error;
+use sdl2::pixels::{Color, PixelFormatEnum};
 use sdl2::surface::Surface;
 
-use crate::Moves;
+use crate::{Block, Moves, Segment, Shape, SlidingDirection};
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct Level {
-    complete: bool,
-    dimensions: (u8, u8),
-    move_stack: Vec<Moves>,
+pub struct LevelRepr {
+    pub dimensions: (u32, u32),
 }
 
-impl Level {
-    pub fn new(dimensions: (u8, u8)) -> Self {
-        Level {
-            complete: false,
-            move_stack: Vec::new(),
-            dimensions,
-        }
+#[derive(DebugStub, Default)]
+pub struct Level<'a> {
+    blocks: Vec<Arc<Block>>,
+    segments: Vec<Arc<Segment>>,
+    dimensions: (u32, u32),
+
+    cell_map: HashMap<(i32, i32), i32>,
+    complete: bool,
+    move_stack: Vec<Moves>,
+    #[debug_stub = "OpaqueHashmap"]
+    segment_cache: HashMap<(Shape, SlidingDirection, Color), Surface<'a>>,
+}
+
+impl<'a> Level<'a> {
+    pub fn new(repr: LevelRepr) -> Result<Self, Error> {
+        let mut level = Level::default();
+        level.dimensions = repr.dimensions;
+        Ok(level)
     }
 
-    pub fn render(&self, cell_size: f64) -> (Surface, Surface) {
-        let left_surface = Surface::new(512, 512, PixelFormatEnum::RGB24).unwrap();
-        let right_surface = Surface::new(512, 512, PixelFormatEnum::RGB24).unwrap();
+    pub fn render(&self, cell_size: u32) -> (Surface, Surface) {
+        let left_surface = Surface::new(
+            self.dimensions.0 * cell_size,
+            self.dimensions.1 * cell_size,
+            PixelFormatEnum::RGB24,
+        )
+        .unwrap();
+        let right_surface = Surface::new(
+            self.dimensions.0 * cell_size,
+            self.dimensions.1 * cell_size,
+            PixelFormatEnum::RGB24,
+        )
+        .unwrap();
         (left_surface, right_surface)
     }
 }

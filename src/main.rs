@@ -1,6 +1,23 @@
-use planar::{Events, Game};
+use std::io::Read;
+use std::fs::File;
+
+use failure::Error;
+use planar::{Events, Level, Game};
+
+fn load_level<'a>() -> Result<Level<'a>, Error> {
+    let mut file = File::open("levels/1.json")?;
+    let mut contents = String::new();
+    file.read_to_string(&mut contents)?;
+
+    let repr = serde_json::from_str(&contents)?;
+    let level = Level::new(repr)?;
+    Ok(level)
+}
 
 fn main() {
+    let level = load_level();
+    println!("{:?}", level);
+
     let sdl_context = sdl2::init().unwrap();
     let event_pump = sdl_context.event_pump().unwrap();
     let video_subsystem = sdl_context.video().unwrap();

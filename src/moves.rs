@@ -1,2 +1,2 @@
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug)]
 pub struct Moves {}

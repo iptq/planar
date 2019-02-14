@@ -5,6 +5,9 @@ authors = ["Michael Zhang <iptq@protonmail.com>"]
 edition = "2018"
 
 [dependencies]
+debug_stub_derive = "0.3.0"
+failure = "0.1"
 sdl2 = "0.32"
 serde = "1.0"
 serde_derive = "1.0"
+serde_json = "1.0"

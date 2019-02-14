@@ -1,18 +1,25 @@
 #[macro_use]
 extern crate serde_derive;
 
+mod block;
 mod events;
 mod level;
 mod moves;
+mod state;
+mod segment;
+mod shape;
 
 use std::time::Duration;
 
 use sdl2::render::WindowCanvas;
 use sdl2::{event::Event, keyboard::Keycode, pixels::Color};
 
+pub use block::Block;
 pub use events::Events;
 pub use level::Level;
 pub use moves::Moves;
+pub use segment::Segment;
+pub use shape::{Shape, SlidingDirection};
 
 pub struct Game {
     running: bool,
