@@ -53,23 +53,36 @@ impl<'a> Level<'a> {
     }
 
     fn render_segment(
-        &self,
+        &mut self,
         segment: impl AsRef<Segment>,
         cell_size: u32,
     ) -> Result<Surface<'a>, Error> {
         let segment = segment.as_ref();
-        segment.render(cell_size)
-        // level.segment_cache.insert(
-        //     (
-        //         segment.get_shape(),
-        //         block.get_direction(),
-        //         block.get_color(),
-        //     ),
-        //     segment.render(cell_size)?,
-        // );
+        let key = (
+            cell_size,
+            segment.get_shape(),
+            segment.get_direction(),
+            segment.get_color(),
+        );
+
+        let mut result_surface =
+            Surface::new(cell_size, cell_size, PixelFormatEnum::RGBA8888).unwrap();
+        let entry = self.segment_cache.get(&key);
+        match entry {
+            Some(entry) => {
+                entry.blit(None, &mut result_surface, None).unwrap();
+            }
+            None => {
+                let result = segment.render(cell_size)?;
+                result.blit(None, &mut result_surface, None).unwrap();
+                self.segment_cache.insert(key, result);
+            }
+        };
+
+        Ok(result_surface)
     }
 
-    pub fn render(&self, cell_size: u32) -> (Surface, Surface) {
+    pub fn render(&mut self, cell_size: u32) -> (Surface, Surface) {
         let (rows, columns) = self.dimensions;
         let left_surface = Surface::new(
             columns * cell_size,
@@ -104,6 +117,36 @@ impl<'a> Level<'a> {
                         .unwrap();
                 }
             }
+        }
+
+        let mut render = Vec::new();
+        for block in self.blocks.iter() {
+            layers[0].set_draw_color(block.get_color());
+            layers[1].set_draw_color(block.get_color());
+
+            for segment in block.segments.iter() {
+                let (mut r, mut c) = block.get_position();
+                let (relr, relc) = segment.get_relative_position();
+                r += relr;
+                c += relc;
+
+                let z = segment.get_z();
+                render.push((
+                    z,
+                    Rect::new(
+                        (cell_size * c) as i32,
+                        (cell_size * r) as i32,
+                        cell_size - 1,
+                        cell_size - 1,
+                    ),
+                    segment.clone(),
+                ));
+            }
+        }
+
+        for (z, rect, segment) in render {
+            let surface = self.render_segment(segment, cell_size);
+            layers[z as usize].fill_rect(rect).unwrap();
         }
 
         (left_canvas.into_surface(), right_canvas.into_surface())

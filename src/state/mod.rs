@@ -10,6 +10,6 @@ pub use self::game::GameState;
 
 pub trait State: Debug {
     fn is_transparent(&self) -> bool;
-    fn update(&self, _: Duration, _: Vec<Event>) {}
-    fn render(&self, _: &mut WindowCanvas) {}
+    fn update(&mut self, _: Duration, _: Vec<Event>) {}
+    fn render(&mut self, _: &mut WindowCanvas) {}
 }

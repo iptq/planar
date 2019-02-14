@@ -73,13 +73,13 @@ impl Game {
         }
 
         // update topmost state
-        if let Some(topmost) = self.state_stack.iter().last() {
+        if let Some(topmost) = self.state_stack.iter_mut().last() {
             topmost.update(delta, events);
         }
 
         // render states
         // TODO: optimize by finding out the topmost nontransparent
-        for state in self.state_stack.iter() {
+        for state in self.state_stack.iter_mut() {
             state.render(&mut self.canvas);
         }
 

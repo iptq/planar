@@ -19,6 +19,7 @@ pub struct BlockRepr {
 
 #[derive(Debug)]
 pub struct Block {
+    pub position: (u32, u32),
     pub segments: Vec<Arc<Segment>>,
     direction: SlidingDirection,
     color: Color,
@@ -27,6 +28,7 @@ pub struct Block {
 impl Block {
     pub fn from(repr: BlockRepr) -> Result<Self, Error> {
         let mut block = Block {
+            position: repr.position,
             segments: Vec::new(),
             direction: repr.direction,
             color: Color::from((repr.color.0, repr.color.1, repr.color.2)),
@@ -38,6 +40,10 @@ impl Block {
         }
 
         Ok(block)
+    }
+
+    pub fn get_position(&self) -> (u32, u32) {
+        self.position
     }
 
     pub fn get_direction(&self) -> SlidingDirection {

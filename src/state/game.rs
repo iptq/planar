@@ -14,7 +14,7 @@ impl<'a> State for GameState<'a> {
         false
     }
 
-    fn render(&self, canvas: &mut WindowCanvas) {
+    fn render(&mut self, canvas: &mut WindowCanvas) {
         let (rows, columns) = self.level.dimensions();
         let (screen_width, screen_height) = canvas.output_size().unwrap();
 
