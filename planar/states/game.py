@@ -1,7 +1,8 @@
 import pygame
 import copy
 from pygame import Color
-from math import floor, ceil
+from math import floor, ceil, sin, pi
+from collections import defaultdict
 
 import planar.constants as constants
 import planar.states as states
@@ -14,57 +15,83 @@ class GameState(states.State):
 
         self.transitioning = False
         self.animation_progress = 0
+        self.move_success = None
         self.move_result = []
         self.original_positions = []
+        self.keymap = defaultdict(bool)
 
     def update(self, events):
         self.game.clock.tick()
         if self.transitioning:
             dt = self.game.clock.get_time() / 1000 * 6
-            if self.animation_progress + dt > 1:
-                for (block, d), (x, y) in zip(self.move_result, self.original_positions):
-                    block.x = x
-                    block.y = y
-                    self.level.move_block(block, d)
-                self.level.move_stack.append(self.move_result)
-                self.transitioning = 0
-                self.animation_progress = 0
-                self.move_result = []
-                self.original_positions = []
+            if self.move_success:
+                if self.animation_progress + dt >= 1:
+                    for (block, d), (x, y) in zip(self.move_result, self.original_positions):
+                        block.x = x
+                        block.y = y
+                        self.level.move_block(block, d)
+                    self.level.move_stack.append(self.move_result)
+                    self.transitioning = 0
+                    self.animation_progress = 0
+                    self.move_success = None
+                    self.move_result = []
+                    self.original_positions = []
+                else:
+                    self.animation_progress += dt
+                    for block, d in self.move_result:
+                        block.x += dt * d[0]
+                        block.y += dt * d[1]
             else:
-                self.animation_progress += dt
-                for block, d in self.move_result:
-                    block.x += dt * d[0]
-                    block.y += dt * d[1]
+                if self.animation_progress + dt >= 1:
+                    for (block, d), (x, y) in zip(self.move_result, self.original_positions):
+                        block.x = x
+                        block.y = y
+                    self.transitioning = 0
+                    self.animation_progress = 0
+                    self.move_success = None
+                    self.move_result = []
+                    self.original_positions = []
+                else:
+                    self.animation_progress += dt
+                    delta = sin(4 * pi * self.animation_progress) / (10 * self.animation_progress + 0.5) / 4
+                    for (block, d), (x, y) in zip(self.move_result, self.original_positions):
+                        if block.movable:
+                            block.x = x + delta * d[0]
+                            block.y = y + delta * d[1]
+        else:
+            if self.keymap[pygame.K_r]:
+                self.level = copy.deepcopy(self.original)
+            elif self.keymap[pygame.K_w]:
+                self.move_success, self.move_result = self.level.players[0].try_move(constants.UP)
+            elif self.keymap[pygame.K_a]:
+                self.move_success, self.move_result = self.level.players[0].try_move(constants.LEFT)
+            elif self.keymap[pygame.K_s]:
+                self.move_success, self.move_result = self.level.players[0].try_move(constants.DOWN)
+            elif self.keymap[pygame.K_d]:
+                self.move_success, self.move_result = self.level.players[0].try_move(constants.RIGHT)
+            elif self.keymap[pygame.K_i]:
+                self.move_success, self.move_result = self.level.players[1].try_move(constants.UP)
+            elif self.keymap[pygame.K_j]:
+                self.move_success, self.move_result = self.level.players[1].try_move(constants.LEFT)
+            elif self.keymap[pygame.K_k]:
+                self.move_success, self.move_result = self.level.players[1].try_move(constants.DOWN)
+            elif self.keymap[pygame.K_l]:
+                self.move_success, self.move_result = self.level.players[1].try_move(constants.RIGHT)
+            if self.move_success is not None:
+                self.original_positions = [(i.x, i.y) for i, d in self.move_result]
+                self.transitioning = True
+                self.animation_progress = 0
+                #print(self.move_result)
         for event in events:
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     self.game.pop_state()
-                if not self.transitioning:
-                    if event.key == pygame.K_r:
-                        self.level = copy.deepcopy(self.original)
-                    elif event.key == pygame.K_w:
-                        self.move_result = self.level.players[0].try_move(constants.UP)
-                    elif event.key == pygame.K_a:
-                        self.move_result = self.level.players[0].try_move(constants.LEFT)
-                    elif event.key == pygame.K_s:
-                        self.move_result = self.level.players[0].try_move(constants.DOWN)
-                    elif event.key == pygame.K_d:
-                        self.move_result = self.level.players[0].try_move(constants.RIGHT)
-                    elif event.key == pygame.K_i:
-                        self.move_result = self.level.players[1].try_move(constants.UP)
-                    elif event.key == pygame.K_j:
-                        self.move_result = self.level.players[1].try_move(constants.LEFT)
-                    elif event.key == pygame.K_k:
-                        self.move_result = self.level.players[1].try_move(constants.DOWN)
-                    elif event.key == pygame.K_l:
-                        self.move_result = self.level.players[1].try_move(constants.RIGHT)
-                    if self.move_result:
-                        self.original_positions = [(i.x, i.y) for i, d in self.move_result]
-                        self.transitioning = True
-                        self.animation_progress = 0
-                    if event.key == pygame.K_z or event.key == pygame.K_u:
-                        self.level.undo()
+                self.keymap[event.key] = True
+                if not self.transitioning and (event.key == pygame.K_z or event.key == pygame.K_u):
+                    self.level.undo()
+
+            if event.type == pygame.KEYUP:
+                self.keymap[event.key] = False
 
         if self.level.complete:
             self.game.cur_level += 1

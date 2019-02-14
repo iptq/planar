@@ -21,7 +21,7 @@ class Game(object):
         self.states = []
 
         self.levels = leveldata.levels
-        self.cur_level = 0
+        self.cur_level = 5
 
     def push_state(self, state):
         state.game = self

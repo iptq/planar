@@ -49,16 +49,16 @@ class Segment(object):
 
         # is the target even in the map?
         if target[0] < 0 or target[0] >= self.block.level.dim[0] or target[1] < 0 or target[1] >= self.block.level.dim[1]:
-            return None
+            return (False, {})
 
         # if this block is immovable, return no
         if not self.block.movable:
-            return None
+            return (False, {})
 
         # if this block is a player, return no
         import planar.player as player
         if isinstance(self.block, player.Player) and not by_player:
-            return None
+            return (False, {})
 
         # first check if this is a triangle and if there's another triangle in this cell
         curr_occupants = self.block.level.cellmap.get(curr)
@@ -88,37 +88,31 @@ class Segment(object):
                 new_direction = list(intersection)[0]
 
                 res = other[0].block_can_move(new_direction, depth=depth+1, ignore=ignore)
-                if res is None:
-                    return None
-                else:
-                    res.update({other[0]: new_direction})
-                    return res
+                res[1].update({other[0]: new_direction})
+                return res
 
         # check if there's anything at target
         occupants = self.block.level.cellmap.get(target)
         if occupants is None:
             # nothing there, we're good to go!
-            return {}
+            return (True, {})
         elif len(occupants) == 1:
             (occupant, i) = occupants[0]
             if occupant == ignore:
-                return {}
+                return (True, {})
             if self.block == occupant:
-                return {}
+                return (True, {})
             else:
                 if self.t == 0:
                     # if this is a rectangle, then we can just push normally
                     res = occupant.block_can_move(direction, depth=depth+1, ignore=ignore)
-                    if res is None:
-                        return None
-                    else:
-                        res.update({occupant: direction})
-                        return res
+                    res[1].update({occupant: direction})
+                    return res
                 else:
                     # check if the thing we're pushing into is a perfectly opposite triangle
                     seg = occupant.segments[i]
                     if seg.t == opposites[self.t]:
-                        return {}
+                        return (True, {})
         elif len(occupants) == 2:
             ind = [constants.UP, constants.LEFT, constants.DOWN, constants.RIGHT].index(direction)
             closer_shapes = [1, 2, 3, 4, 1][ind:ind+2]
@@ -132,14 +126,12 @@ class Segment(object):
             assert closer is not None and farther is not None
 
             if closer[0] == self.block:
-                return {}
+                return (True, {})
 
             res = closer[0].segments[closer[1]].segment_can_move(direction, depth=depth+1)
-            if res is None:
-                return None
-            else:
-                res.update({closer[0]: direction})
-                return res
+            res[1].update({closer[0]: direction})
+            return res
+        return (False, {})
 
     def render(self, cell_size, color, padding = 1):
         tile = pygame.Surface((cell_size, cell_size), pygame.SRCALPHA, 32)
@@ -216,22 +208,21 @@ class Block(object):
 
     def block_can_move(self, direction, by_player=False, depth=0, ignore=None):
         if self.direction == constants.DIRECTION_HORIZONTAL and (direction == constants.UP or direction == constants.DOWN):
-            return None
+            return (False, {})
         if self.direction == constants.DIRECTION_VERTICAL and (direction == constants.LEFT or direction == constants.RIGHT):
-            return None
+            return (False, {})
 
         result = {}
         failed = False
         for segment in self.segments:
             res = segment.segment_can_move(direction, by_player=by_player, depth=depth+1, ignore=ignore)
-            if res is None:
+            if not res[0]:
                 failed = True
-            else:
-                result.update(res)
+            result.update(res[1])
 
-        if failed: return None
+        if failed: return (False, result)
         result.update({self: direction})
-        return result
+        return (True, result)
 
     def render(self, cell_size, padding=1):
         layers = (pygame.Surface(((self.max_x - self.min_x + 1) * cell_size, (self.max_y - self.min_y + 1) * cell_size), pygame.SRCALPHA, 32),
