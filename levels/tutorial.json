@@ -15,5 +15,15 @@
             "direction": "Horizontal",
             "color": [255, 10, 100]
         }
+    ],
+    "players": [
+        {
+            "position": [1, 6],
+            "z": 0
+        },
+        {
+            "position": [1, 6],
+            "z": 1
+        }
     ]
 }

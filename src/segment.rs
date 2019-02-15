@@ -3,18 +3,18 @@ use sdl2::pixels::Color;
 use sdl2::pixels::PixelFormatEnum;
 use sdl2::surface::Surface;
 
-use crate::{Block, Shape, SlidingDirection};
+use crate::{Block, Point, Shape, SlidingDirection};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct SegmentRepr {
-    pub rel_position: (u32, u32),
+    pub rel_position: Point<u32>,
     pub z: u32,
     pub shape: Shape,
 }
 
 #[derive(Debug)]
 pub struct Segment {
-    pub rel_position: (u32, u32),
+    pub rel_position: Point<u32>,
     pub z: u32,
     color: Color,
     direction: SlidingDirection,
@@ -32,8 +32,8 @@ impl Segment {
         })
     }
 
-    pub fn get_relative_position(&self) -> (u32, u32) {
-        self.rel_position
+    pub fn get_relative_position(&self) -> Point<u32> {
+        self.rel_position.clone()
     }
 
     pub fn get_z(&self) -> u32 {

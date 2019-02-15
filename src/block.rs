@@ -3,14 +3,14 @@ use std::sync::Arc;
 use failure::Error;
 use sdl2::pixels::Color;
 
-use crate::{Segment, SegmentRepr, SlidingDirection};
+use crate::{Point, Segment, SegmentRepr, SlidingDirection};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct ColorRepr(u8, u8, u8);
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct BlockRepr {
-    pub position: (u32, u32),
+    pub position: Point<u32>,
     pub segments: Vec<SegmentRepr>,
     pub movable: bool,
     pub direction: SlidingDirection,
@@ -19,7 +19,7 @@ pub struct BlockRepr {
 
 #[derive(Debug)]
 pub struct Block {
-    pub position: (u32, u32),
+    pub position: Point<u32>,
     pub segments: Vec<Arc<Segment>>,
     direction: SlidingDirection,
     color: Color,
@@ -42,8 +42,8 @@ impl Block {
         Ok(block)
     }
 
-    pub fn get_position(&self) -> (u32, u32) {
-        self.position
+    pub fn get_position(&self) -> Point<u32> {
+        self.position.clone()
     }
 
     pub fn get_direction(&self) -> SlidingDirection {

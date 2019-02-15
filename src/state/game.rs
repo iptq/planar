@@ -1,8 +1,10 @@
+use std::time::Duration;
+
 use sdl2::rect::Rect;
 use sdl2::render::WindowCanvas;
 
 use super::State;
-use crate::Level;
+use crate::{Level, Event, Point};
 
 #[derive(Debug)]
 pub struct GameState<'a> {
@@ -10,12 +12,11 @@ pub struct GameState<'a> {
 }
 
 impl<'a> State for GameState<'a> {
-    fn is_transparent(&self) -> bool {
-        false
+    fn update(&mut self, _: Duration, events: Vec<Event>) {
+        println!("events: {:?}", events);
     }
-
     fn render(&mut self, canvas: &mut WindowCanvas) {
-        let (rows, columns) = self.level.dimensions();
+        let Point(rows, columns) = self.level.dimensions();
         let (screen_width, screen_height) = canvas.output_size().unwrap();
 
         // determine cell size

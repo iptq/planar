@@ -8,21 +8,25 @@ mod block;
 mod events;
 mod level;
 mod moves;
+mod player;
+mod point;
 mod segment;
 mod shape;
 pub mod state;
+mod ui;
 
 use std::time::{Duration, Instant};
 
 use packer::Packer;
-use sdl2::event::Event;
 use sdl2::pixels::Color;
 use sdl2::render::WindowCanvas;
 
 pub use block::{Block, BlockRepr};
-pub use events::Events;
+pub use events::{Events, Event};
 pub use level::{Level, LevelRepr};
 pub use moves::Moves;
+pub use player::{Player, PlayerRepr};
+pub use point::Point;
 pub use segment::{Segment, SegmentRepr};
 pub use shape::{Direction, Shape, SlidingDirection};
 pub use state::State;
@@ -62,7 +66,7 @@ impl Game {
         self.canvas.clear();
 
         // gather all the events
-        let events = self.events.poll_iter().collect::<Vec<_>>();
+        let events = self.events.iter().collect::<Vec<_>>();
 
         // catch quit event
         for event in events.iter() {
