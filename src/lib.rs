@@ -13,6 +13,7 @@ mod point;
 mod segment;
 mod shape;
 pub mod state;
+mod transition;
 mod ui;
 
 use std::time::{Duration, Instant};
@@ -22,7 +23,7 @@ use sdl2::pixels::Color;
 use sdl2::render::WindowCanvas;
 
 pub use block::{Block, BlockRepr};
-pub use events::{Events, Event};
+pub use events::{Event, Events};
 pub use level::{Level, LevelRepr};
 pub use moves::Moves;
 pub use player::{Player, PlayerRepr};
@@ -71,7 +72,7 @@ impl Game {
         // catch quit event
         for event in events.iter() {
             match event {
-                Event::Quit { .. } => self.running = false,
+                Event::Quit => self.running = false,
                 _ => (),
             }
         }

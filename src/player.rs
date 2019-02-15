@@ -1,10 +1,10 @@
-use failure::{Error};
 use crate::Point;
+use failure::Error;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct PlayerRepr {
     pub position: Point<u32>,
-    pub z:u32,
+    pub z: u32,
 }
 
 #[derive(Debug)]

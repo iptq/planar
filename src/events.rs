@@ -1,4 +1,7 @@
-use sdl2::{event::{EventPollIterator, Event as SdlEvent}, EventPump};
+use sdl2::{
+    event::{Event as SdlEvent, EventPollIterator},
+    EventPump,
+};
 
 // TODO: eventually have an abstracted view of events that only consist of
 // ones that are of interest to the game (i.e. normalize mouse/touch)
@@ -27,7 +30,7 @@ impl From<SdlEvent> for Event {
     fn from(evt: SdlEvent) -> Self {
         match evt {
             SdlEvent::Quit { .. } => Event::Quit,
-            evt => Event::Unknown(evt)
+            evt => Event::Unknown(evt),
         }
     }
 }

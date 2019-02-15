@@ -4,7 +4,7 @@ use sdl2::rect::Rect;
 use sdl2::render::WindowCanvas;
 
 use super::State;
-use crate::{Level, Event, Point};
+use crate::{Event, Level, Point};
 
 #[derive(Debug)]
 pub struct GameState<'a> {
