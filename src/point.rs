@@ -1,4 +1,4 @@
-use std::ops::Add;
+use std::ops::{Add, Sub};
 
 use crate::Direction;
 
@@ -13,6 +13,14 @@ impl<T: Add<Output = T>> Add for Point<T> {
     }
 }
 
+impl<T: Sub<Output = T>> Sub for Point<T> {
+    type Output = Point<T>;
+
+    fn sub(self, rhs: Point<T>) -> Self::Output {
+        Point(self.0 - rhs.0, self.1 - rhs.1)
+    }
+}
+
 impl Add<Direction> for Point<i32> {
     type Output = Point<i32>;
 
@@ -24,6 +32,12 @@ impl Add<Direction> for Point<i32> {
             Direction::Right => self.1 += 1,
         };
         self
+    }
+}
+
+impl Point<i32> {
+    pub fn into_unsigned(self) -> Point<u32> {
+        Point(self.0 as u32, self.1 as u32)
     }
 }
 

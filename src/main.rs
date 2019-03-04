@@ -2,7 +2,7 @@ use std::io::Cursor;
 
 use failure::Error;
 use packer::Packer;
-use planar::{self, state::GameState, Events, Game, Level, Levels};
+use planar::{self, state::MenuState, Events, Game, Level, Levels};
 use ref_thread_local::{ref_thread_local, RefThreadLocal};
 use sdl2::Sdl;
 
@@ -17,6 +17,7 @@ ref_thread_local! {
     static managed GAME: Game = {
         let event_pump = sdl_context.borrow().event_pump().unwrap();
         let video_subsystem = sdl_context.borrow().video().unwrap();
+        let ttf_context = sdl2::ttf::init().unwrap();
 
         let window = video_subsystem
             .window("planar", 1366, 768)
@@ -27,11 +28,11 @@ ref_thread_local! {
 
         let canvas = window.into_canvas().build().unwrap();
         let events = Events::new(event_pump);
-        let mut game = Game::new(canvas, events);
+        let mut game = Game::new(canvas, events, ttf_context);
 
         let level = load_level().unwrap();
-        let game_state = GameState::new(level);
-        game.push_state(game_state);
+        let start_state = MenuState::new();
+        game.push_state(start_state);
 
         game
     };

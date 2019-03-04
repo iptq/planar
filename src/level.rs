@@ -117,7 +117,7 @@ impl<'a> Level<'a> {
                 }
                 Some(Cell::Diagonal1(first, second)) | Some(Cell::Diagonal2(first, second)) => {
                     // figure out which one is the current segment
-                },
+                }
                 None => unreachable!("cellmap inconsistency"),
             }
         }

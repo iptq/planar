@@ -10,6 +10,7 @@ mod level;
 mod moves;
 mod player;
 mod point;
+mod renderer;
 mod segment;
 mod shape;
 pub mod state;
@@ -21,6 +22,7 @@ use std::time::{Duration, Instant};
 use packer::Packer;
 use sdl2::pixels::Color;
 use sdl2::render::WindowCanvas;
+use sdl2::ttf::Sdl2TtfContext;
 
 pub use block::{Block, BlockRepr};
 pub use events::{Event, Events};
@@ -28,6 +30,7 @@ pub use level::{Level, LevelRepr};
 pub use moves::Moves;
 pub use player::{Player, PlayerRepr};
 pub use point::Point;
+pub use renderer::Renderer;
 pub use segment::{Segment, SegmentRepr};
 pub use shape::{Direction, Shape, SlidingDirection};
 pub use state::State;
@@ -42,16 +45,18 @@ pub struct Game {
     state_stack: Vec<Box<State>>,
     events: Events,
     canvas: WindowCanvas,
+    ttf_context: Sdl2TtfContext,
 }
 
 impl Game {
-    pub fn new(canvas: WindowCanvas, events: Events) -> Self {
+    pub fn new(canvas: WindowCanvas, events: Events, ttf_context: Sdl2TtfContext) -> Self {
         Game {
             last_update: Instant::now(),
             running: true,
             state_stack: Vec::new(),
             canvas,
             events,
+            ttf_context,
         }
     }
 

@@ -10,8 +10,7 @@ pub enum Easing {
     Linear,
 }
 
-pub trait Transition {
-}
+pub trait Transition {}
 
 pub struct TransitionInstance<T: Transition> {
     inner: T,
@@ -29,5 +28,4 @@ impl<T: Transition> TransitionInstance<T> {
 
 pub struct Move<D: Drawable>(pub D);
 
-impl<D: Drawable> Transition for Move<D> {
-}
+impl<D: Drawable> Transition for Move<D> {}
