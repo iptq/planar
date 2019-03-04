@@ -21,6 +21,7 @@ pub struct BlockRepr {
 pub struct Block {
     pub position: Point<u32>,
     pub segments: Vec<Arc<Segment>>,
+    pub movable: bool,
     direction: SlidingDirection,
     color: Color,
 }
@@ -30,6 +31,7 @@ impl Block {
         let mut block = Block {
             position: repr.position,
             segments: Vec::new(),
+            movable: repr.movable,
             direction: repr.direction,
             color: Color::from((repr.color.0, repr.color.1, repr.color.2)),
         };

@@ -13,8 +13,8 @@ impl<T: Add<Output = T>> Add for Point<T> {
     }
 }
 
-impl Add<Direction> for Point<u32> {
-    type Output = Point<u32>;
+impl Add<Direction> for Point<i32> {
+    type Output = Point<i32>;
 
     fn add(mut self, rhs: Direction) -> Self::Output {
         match rhs {
@@ -24,5 +24,11 @@ impl Add<Direction> for Point<u32> {
             Direction::Right => self.1 += 1,
         };
         self
+    }
+}
+
+impl Point<u32> {
+    pub fn into_signed(self) -> Point<i32> {
+        Point(self.0 as i32, self.1 as i32)
     }
 }

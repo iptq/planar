@@ -15,6 +15,7 @@ impl<'a> State for GameState<'a> {
     fn update(&mut self, _: Duration, events: Vec<Event>) {
         println!("events: {:?}", events);
     }
+
     fn render(&mut self, canvas: &mut WindowCanvas) {
         let Point(rows, columns) = self.level.dimensions();
         let (screen_width, screen_height) = canvas.output_size().unwrap();

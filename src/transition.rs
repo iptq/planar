@@ -3,28 +3,31 @@ use std::time::Duration;
 use sdl2::surface::Surface;
 
 pub trait Drawable {
-    fn draw<'a>(&self) -> Surface<'a>;
+    fn draw<'a>(&mut self) -> Surface<'a>;
 }
 
-pub enum TransitionKind {
-
+pub enum Easing {
+    Linear,
 }
 
-pub struct TransitionInstance {
-    inner: Transition,
+pub trait Transition {
+}
+
+pub struct TransitionInstance<T: Transition> {
+    inner: T,
     progress: Duration,
 }
 
-impl TransitionInstance {
-    pub fn new(inner: Transition) -> Self {
+impl<T: Transition> TransitionInstance<T> {
+    pub fn new(inner: T) -> Self {
         TransitionInstance {
             inner,
-            progress: Duration::from_secs(0)
+            progress: Duration::from_secs(0),
         }
     }
 }
 
-pub struct Transition {
-    kind: TransitionKind,
-    duration: Duration,
+pub struct Move<D: Drawable>(pub D);
+
+impl<D: Drawable> Transition for Move<D> {
 }

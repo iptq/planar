@@ -24,7 +24,7 @@ pub struct LevelRepr {
 enum Cell {
     Single(Arc<Segment>),
     // self.0 / self.1
-    Diagonal(Arc<Segment>, Arc<Segment>),
+    Diagonal1(Arc<Segment>, Arc<Segment>),
     // self.0 \ self.1
     Diagonal2(Arc<Segment>, Arc<Segment>),
 }
@@ -36,7 +36,7 @@ pub struct Level<'a> {
     dimensions: Point<u32>,
     players: (Player, Player),
 
-    cell_map: HashMap<(i32, i32), Cell>,
+    cell_map: HashMap<(u32, u32, u32), Cell>,
     complete: bool,
     move_stack: Vec<Moves>,
 
@@ -85,19 +85,50 @@ impl<'a> Level<'a> {
         block: impl AsRef<Block>,
         direction: Direction,
         moveset: &mut HashSet<()>,
-    ) {
+    ) -> bool {
         let block = block.as_ref();
+
+        // is this block movable?
+        if block.movable {
+            return false;
+        }
 
         // check if each of its segments can move
         for segment in block.segments.iter() {
             // where's this segment going to go?
-            let target = block.get_position() + segment.get_relative_position() + direction.clone();
+            let segment_position = block.get_position() + segment.get_relative_position();
+            let target = segment_position.clone().into_signed() + direction.clone();
+
+            // check if this segment is a triangle
+            let curr_occupants =
+                self.cell_map
+                    .get(&(segment_position.0, segment_position.1, segment.get_z()));
+            match curr_occupants {
+                Some(Cell::Single(segment)) => {
+                    // is the target even in the map?
+                    let dimensions = self.dimensions().into_signed();
+                    if target.0 < 0
+                        || target.0 >= dimensions.0
+                        || target.1 < 0
+                        || target.1 >= dimensions.1
+                    {
+                        return false;
+                    }
+                }
+                Some(Cell::Diagonal1(first, second)) | Some(Cell::Diagonal2(first, second)) => {
+                    // figure out which one is the current segment
+                },
+                None => unreachable!("cellmap inconsistency"),
+            }
         }
+
+        false
     }
 
-    fn try_move(&self, block: impl AsRef<Block>, direction: Direction) {
+    fn try_move(&self, block: impl AsRef<Block>, direction: Direction) -> (bool, HashSet<()>) {
         let mut moves = HashSet::new();
-        self.try_move_rec(block, direction, &mut moves)
+        let result = self.try_move_rec(block, direction, &mut moves);
+        (result, moves)
     }
 
     fn render_segment(
