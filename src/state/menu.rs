@@ -1,3 +1,5 @@
+use std::time::Duration;
+
 use sdl2::pixels::Color;
 use sdl2::rect::Rect;
 use sdl2::render::WindowCanvas;
@@ -5,9 +7,11 @@ use sdl2::render::WindowCanvas;
 use crate::ui::Button;
 use crate::Renderer;
 use crate::State;
+use crate::Event;
 
 pub struct MenuState {
     renderer: Renderer,
+    play_btn: usize,
 }
 
 impl MenuState {
@@ -15,13 +19,16 @@ impl MenuState {
         let mut renderer = Renderer::new();
 
         let btn = Button::new(5, 5, 10, 10, Color::RGB(170, 170, 170), "hello".to_owned());
-        renderer.push(btn);
+        let play_btn = renderer.insert(btn);
 
-        MenuState { renderer }
+        MenuState { renderer, play_btn }
     }
 }
 
 impl State for MenuState {
+    fn update(&mut self, _: Duration, events: Vec<Event>) {
+    }
+
     fn render(&mut self, canvas: &mut WindowCanvas) {
         let texture_creator = canvas.texture_creator();
         let (loc, surface) = self.renderer.render();

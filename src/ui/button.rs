@@ -3,7 +3,7 @@ use sdl2::rect::Rect;
 use sdl2::surface::Surface;
 
 use crate::renderer::Drawable;
-use crate::Point;
+use crate::{Point, Event};
 
 pub struct Button {
     x: i32,
@@ -40,5 +40,9 @@ impl Drawable for Button {
         let mut surface = Surface::new(self.width, self.height, PixelFormatEnum::RGBA8888).unwrap();
         surface.fill_rect(Rect::new(0, 0, self.width, self.height), self.color);
         surface
+    }
+
+    fn update(&mut self, events: Vec<Event>) {
+
     }
 }

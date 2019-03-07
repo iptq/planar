@@ -1,31 +1,40 @@
+use std::collections::HashMap;
+
 use sdl2::pixels::{Color, PixelFormatEnum};
 use sdl2::rect::Rect;
 use sdl2::surface::Surface;
 
-use crate::Point;
+use crate::{Point, Event};
 
 pub trait Drawable {
     fn get_position(&self) -> Point<i32>;
     fn get_size(&self) -> Point<u32>;
 
     fn draw<'a>(&mut self) -> Surface<'a>;
+    fn update(&mut self, events: Vec<Event>) {}
 }
 
 pub struct Renderer {
-    items: Vec<Box<dyn Drawable>>,
+    index: usize,
+    items: HashMap<usize, Box<dyn Drawable>>,
 }
 
 impl Renderer {
     pub fn new() -> Renderer {
-        Renderer { items: Vec::new() }
+        Renderer {
+            index: 0,
+            items: HashMap::new(),
+        }
     }
 
-    pub fn push(&mut self, item: impl Drawable + 'static) {
-        self.items.push(Box::new(item));
+    pub fn insert(&mut self, item: impl Drawable + 'static) -> usize {
+        self.index += 1;
+        self.items.insert(self.index, Box::new(item));
+        self.index
     }
 
     pub fn render<'a>(&mut self) -> (Point<i32>, Surface<'a>) {
-        let (min, max) = self.items.iter().fold((None, None), |(min, max), item| {
+        let (min, max) = self.items.values().fold((None, None), |(min, max), item| {
             let top_left = item.get_position();
             let bottom_right = top_left.clone() + item.get_size().into_signed();
             let min = Some(match min {
@@ -65,7 +74,7 @@ impl Renderer {
                 let mut canvas = surface.into_canvas().unwrap();
 
                 let texture_creator = canvas.texture_creator();
-                for mut item in self.items.iter_mut() {
+                for mut item in self.items.values_mut() {
                     let inner = item.draw();
                     let inner = texture_creator.create_texture_from_surface(inner).unwrap();
                     let dimensions = item.get_size();
